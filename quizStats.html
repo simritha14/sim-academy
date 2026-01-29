@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+      <link rel="icon" href="favicon1.ico" type="image/x-icon">
+
+    <title>II PUC Statistics</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        body { font-family: 'Segoe UI', Arial, sans-serif; background: #f4f7f9; padding: 20px; line-height: 1.6; }
+        .paper { max-width: 900px; margin: auto; background: white; padding: 40px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); border-radius: 5px; }
+        h1, h2, h3 { text-align: center; margin: 5px; color: #2c3e50; }
+        .section-header { background: #34495e; color: white; padding: 10px; margin: 25px 0 15px 0; font-weight: bold; text-transform: uppercase; }
+        .sub-section-header { font-weight: bold; text-decoration: underline; margin: 15px 0 10px 0; color: #34495e; }
+        .question-block { margin-bottom: 25px; padding-left: 5px; }
+        .controls { text-align: center; margin-bottom: 20px; position: sticky; top: 0; background: #f4f7f9; padding: 10px; z-index: 100; }
+        button { padding: 12px 25px; font-size: 15px; cursor: pointer; background: #27ae60; color: white; border: none; border-radius: 4px; font-weight: bold; }
+        button:hover { background: #219150; }
+        table { width: 100%; border-collapse: collapse; margin: 10px 0; }
+        th, td { border: 1px solid #bdc3c7; padding: 8px; text-align: center; }
+        th { background: #ecf0f1; }
+        .marks { float: right; font-weight: bold; }
+        
+        /* THE PRINT LOGIC: Hides UI elements on the paper */
+        @media print { 
+            .controls { display: none !important; } 
+            body { background: white; padding: 0; }
+            .paper { box-shadow: none; border: none; width: 100%; max-width: 100%; margin: 0; padding: 20px; }
+            .section-header { border: 1px solid #333; color: black; background: #eee !important; -webkit-print-color-adjust: exact; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="controls">
+    <button onclick="generatePaper()">Generate New Paper</button>
+    <button onclick="window.print()" style="background:#7f8c8d; margin-left:10px;">Print / Save PDF</button>
+</div>
+
+<div class="paper" id="paper-content">
+    <h2>II PUC STATISTICS</h2>
+    <h3>MOCK QUESTION PAPER</h3>
+    <hr>
+    <div id="content-area"></div>
+</div>
+
+<script>
+const questionBank = {
+17: [
+        "Mention a factor causing following variations in a time series: (i) Seasonal variation (ii) Cyclical variation",
+         "Obtain the trend values by the method of semi-averages for the following data:<br><table><tr><th>Year</th><td>2018</td><td>2019</td><td>2020</td><td>2021</td><td>2022</td><td>2023</td><td>2024</td></tr><tr><th>Production</th><td>105</td><td>115</td><td>120</td><td>100</td><td>110</td><td>125</td><td>135</td></tr></table>",
+         "State two conditions of least squares method of measuring trend."
+    
+    ],
+    18: [
+        "Write two conditions for applying binomial expansion method of interpolation and extrapolation.",
+        "Write two assumptions of interpolation and extrapolation.",
+        "Define 'interpolation' and 'extrapolation'."
+    ],
+    19: [
+        "In a Poisson distribution, if \\(P(X=0)=0.1225\\), write the probability mass function.",
+        "Write the probability mass function of a Bernoulli distribution with parameter p = 3/5.",
+        "Find the mean of a hyper-geometric distribution with parameters a = 6, b = 4 and n = 5."
+    ],
+    20: [
+        "Mention two features of student's t-distribution.",
+        "If the parameter of a t-distribution is 8, find its standard deviation.",
+        "Find the variance of a chi-square distribution with 8 degrees of freedom."
+    ],
+    21: [
+        "Define: 'Point estimation' and 'interval estimation'.",
+        "Mention two branches of statistical inference.",
+        "Define: 'type-I error' and 'type II error'."
+    ],
+    22: [
+        "In a paired t-test, if \\(n=5\\), \\(d=3\\) and \\(S_{d}=2\\), then what would be the value of the test statistic?",
+        "Write the chi-square test statistic with degrees of freedom in testing of independence of attributes in a 2x2 contingency table.",
+        "If (x̄₁ - x̄₂) = 2.6 and S.E.(x̄₁ - x̄₂) = 1.3, find the value of test statistic Z."
+    ],
+    23: [
+        "In statistical quality control, if \\(\\overline{X}^{\\prime}=65\\), \\(\\sigma^{\\prime}=5\\), and \\(n=5\\), then write the upper control limit of X-chart.",
+        "Mention two types of causes for variation in a manufacturing process.",
+        "If P' = 0.1 and n = 100, calculate the upper control limit for d-chart."
+    ],
+    24: [
+        "For an equipment the fourth year depreciation cost is Rs 6,000 and the cumulative maintenance cost is Rs 6,200. Find the average annual cost.",
+        "If R = 100 units/month, C3 = Rs. 100 and C1 = Rs. 0.50, find the EOQ (Q⁰).",
+        "If Q⁰ = 300 units, C₁ = Rs 10/unit/year and C₂ = Rs 40/unit/year, then find the maximum inventory level."
+    
+    ],
+    25: [
+        "Calculate simple geometric mean price index number for the following data:<br><table><tr><th>Item</th><th>Base year Price</th><th>Current year Price</th></tr><tr><td>A</td><td>14</td><td>21</td></tr><tr><td>B</td><td>12</td><td>09</td></tr><tr><td>C</td><td>20</td><td>27</td></tr><tr><td>D</td><td>28</td><td>25</td></tr></table>",
+        "Calculate the consumer price index number by aggregative expenditure method for the year 2024 from the following data:<br><table><tr><th>Commodity</th><th>Quantity 2019</th><th>Price 2019 (Rs)</th><th>Price 2024 (Rs)</th></tr><tr><td>A</td><td>15</td><td>7</td><td>9</td></tr><tr><td>B</td><td>20</td><td>18</td><td>14</td></tr><tr><td>C</td><td>10</td><td>17</td><td>21</td></tr><tr><td>D</td><td>25</td><td>19</td><td>16</td></tr><tr><td>E</td><td>30</td><td>21</td><td>27</td></tr></table>",
+        "Calculate Kelly's price index number for the following data and comment on the result.<br><table><tr><th>Items</th><th>Price 2019 (Rs)</th><th>Price 2024 (Rs)</th><th>No. of units sold</th></tr><tr><td>A</td><td>21</td><td>30</td><td>10</td></tr><tr><td>B</td><td>27</td><td>40</td><td>15</td></tr><tr><td>C</td><td>15</td><td>23</td><td>12</td></tr><tr><td>D</td><td>37</td><td>40</td><td>20</td></tr></table>"
+    
+    ],
+    26: [
+        "Interpolate the value of 'Y' when \\(X=70\\) by using Newton's advancing difference method from the following data:<br><table><tr><th>X</th><td>20</td><td>40</td><td>60</td><td>80</td><td>100</td></tr><tr><th>Y</th><td>20</td><td>32</td><td>54</td><td>90</td><td>144</td></tr></table>",
+        "Interpolate and extrapolate the sales for the year 2021 and 2025 from the following data:<br><table><tr><th>Year</th><td>2019</td><td>2020</td><td>2021</td><td>2022</td><td>2023</td><td>2024</td><td>2025</td></tr><tr><th>Sales (in 000 Rs)</th><td>35</td><td>40</td><td>?</td><td>50</td><td>55</td><td>60</td><td>?</td></tr></table>",
+         "Interpolate and extrapolate the profit for the years 2019 and 2025 by using binomial expansion method from the following data:<br><table><tr><th>Year</th><td>2015</td><td>2017</td><td>2019</td><td>2021</td><td>2023</td><td>2025</td></tr><tr><th>Profit (Cr Rs)</th><td>8</td><td>14</td><td>?</td><td>21</td><td>30</td><td>?</td></tr></table>"
+    
+    
+    ],
+    27: [
+        "Four fair coins are tossed 96 times. Find the expected frequencies of number of heads obtained.",
+        "Fit a Poisson distribution to the following data and find the expected frequencies:<br><table><tr><th>No. of printing mistakes/page (x)</th><td>0</td><td>1</td><td>2</td><td>3</td><td>4 or more</td></tr><tr><th>No. of pages (f)</th><td>40</td><td>30</td><td>20</td><td>10</td><td>0</td></tr></table>",
+        "In a college, 60% of the students are girls. In a random sample of 5 students, find the probability of getting (i) 3 girls, (ii) at least one girl."
+    
+    
+    ],
+    28: [
+        "Find the mean and variance of a hyper-geometric distribution with parameters \\(a=4, b=8\\) and \\(n=6\\).",
+        "There are 15 lecturers in a college, in which 5 are science lecturers. A committee of 4 lecturers is to be formed. Find the probability that the committee contains: (i) only science lecturers (ii) exactly 2 science lecturers.",
+        "On an average a telephone operator receives 4 telephone calls per 10 minutes interval. Find the probability that in a particular 10 minutes interval he (i) does not receive any calls (ii) receives more than 2 calls."
+   
+    
+    ],
+    29: [
+        "A sample of 64 students taken from a school. The mean and standard deviation of their heights are 151 cm and 4 cm respectively. Test at 1% level of significance that average height of students is 150 cm.",
+         "A random sample of 10 items from a normal population with mean μ has mean 48 and S.D 4. Test at 5% level of significance whether the population mean is 50.",
+          "The standard deviation of production of wheat is assumed to be 10.2. A sample of 25 acres showed that the standard deviation is 8.2. Test at 1% level of significance whether the standard deviation of production of wheat is less than 10.2."
+    
+    
+    ],
+    30: [
+        "Solve the following game by using maximin-minimax principle. Is the game fair?<br><table><tr><th>Player A \\ Player B</th><th>B1</th><th>B2</th><th>B3</th></tr><tr><td>A1</td><td>1</td><td>-1</td><td>3</td></tr><tr><td>A2</td><td>2</td><td>-1</td><td>2</td></tr><tr><td>A3</td><td>-1</td><td>0</td><td>0</td></tr><tr><td>A4</td><td>2</td><td>0</td><td>4</td></tr></table>",
+        "Obtain an initial basic feasible solution for the following transportation problem by North-West corner rule. Find the total transportation cost.<br><table><tr><th>Factory \ Warehouse</th><th>P</th><th>Q</th><th>R</th><th>S</th><th>Supply</th></tr><tr><td>A</td><td>25</td><td>17</td><td>25</td><td>14</td><td>300</td></tr><tr><td>B</td><td>15</td><td>10</td><td>18</td><td>24</td><td>500</td></tr><tr><td>C</td><td>16</td><td>20</td><td>8</td><td>13</td><td>600</td></tr><tr><th>Demand</th><td>75</td><td>325</td><td>500</td><td>500</td><td>1400</td></tr></table>",
+        "Obtain an initial basic feasible solution for the following transportation problem by matrix-minima method. Find the total transportation cost.<br><table><tr><th>From \ To</th><th>D1</th><th>D2</th><th>D3</th><th>D4</th><th>Supply</th></tr><tr><td>O1</td><td>15</td><td>3</td><td>7</td><td>14</td><td>80</td></tr><tr><td>O2</td><td>5</td><td>6</td><td>10</td><td>12</td><td>70</td></tr><tr><td>O3</td><td>4</td><td>11</td><td>8</td><td>9</td><td>50</td></tr><tr><th>Demand</th><td>25</td><td>45</td><td>40</td><td>90</td><td></td></tr></table>"
+    
+    
+    ],
+    31: [
+        "There is a demand for 10,000 items per year. The replenishment cost is Rs 200 and the maintenance cost is Rs 10 per year. Replenishment is instantaneous and shortages are not allowed. Find: (i) Economic order quantity (ii) Re-order time.",
+        "A machine costs Rs. 20,000. Its maintenance costs and resale values are given below. Find the optimum replacement period.<br><table><tr><th>Year</th><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td></tr><tr><th>Maintenance Cost (Rs)</th><td>600</td><td>1300</td><td>2020</td><td>3000</td><td>4100</td></tr><tr><th>Resale Value (Rs)</th><td>19000</td><td>17000</td><td>15000</td><td>12000</td><td>10000</td></tr></table>",
+        "Solve the following game by using dominance principle. Is the game fair?<br><table><tr><th>Player A \ Player B</th><th>B1</th><th>B2</th><th>B3</th></tr><tr><td>A1</td><td>-2</td><td>6</td><td>7</td></tr><tr><td>A2</td><td>0</td><td>5</td><td>4</td></tr><tr><td>A3</td><td>-5</td><td>3</td><td>8</td></tr><tr><td>A4</td><td>-6</td><td>0</td><td>9</td></tr></table>"
+    
+    
+    ],
+    32: [
+        "The weight of persons is normally distributed with mean 70 kg and standard deviation 4 kg. Find the probability that a randomly selected person whose weight is: (i) more than 62 kg (ii) less than 74 kg.",
+        "In a normal distribution, 31% of the items are under 45 and 8% are over 64. Find the mean and standard deviation of the distribution.",
+        "Marks scored by the students of a class follow normal distribution with mean 60 and standard deviation 6 marks. Find the probability that a student selected at random from the class scored (i) more than 75 marks (ii) between 54 and 66 marks."
+  
+    
+    ],
+    33: [
+        "In 60 throws of a single die, the following distribution of faces are obtained. Test at 5% level of significance that the die is unbiased.<br><table><tr><th>Face</th><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td></tr><tr><th>Frequency</th><td>15</td><td>8</td><td>14</td><td>12</td><td>6</td><td>5</td></tr></table>",
+        "In a random sample of 400 persons from a large city, 210 are found to be wheat eaters. In another sample of 600 persons from another large city, 330 are wheat eaters. Test at 1% level of significance whether the proportion of wheat eaters in the two cities is same.",
+        "Following is the data regarding five students administered for an I.Q. test before and after treatment of yoga. Is yoga treatment effective in improving I.Q.? (Use 5% level of significance).<br><table><tr><th>I.Q. before yoga</th><td>120</td><td>116</td><td>118</td><td>125</td><td>115</td></tr><tr><th>I.Q. after yoga</th><td>118</td><td>125</td><td>125</td><td>130</td><td>120</td></tr></table>"
+    
+    
+    ],
+    34: [
+        "Following are the number of defects observed in a process. Obtain the suitable control limits.<br><table><tr><th>Sample number</th><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td><td>7</td><td>8</td></tr><tr><th>Number of defects</th><td>1</td><td>6</td><td>5</td><td>7</td><td>5</td><td>2</td><td>1</td><td>3</td></tr></table>",
+        "Ten samples of size 100 each are inspected and the number of defectives are given below: 2, 0, 4, 1, 5, 4, 8, 4, 1, 1. Find the control limits for np-chart.",
+         "Calculate the control limits for x̄-chart when x̄ = 30, R̄ = 20 and n = 4."
+    
+    ],
+    35: [
+        "Solve the following linear programming problem graphically: Minimize \\(Z=10x+8y\\) Subject to constraints: \\(4x+y\\ge40\\), \\(2x+3y\\ge60\\) and \\(x, y\\ge0\\).",
+        "Solve the following linear programming problem graphically: Maximize Z = 2x + 3y Subject to: x + y ≤ 350, 2x + y ≤ 600 and x, y ≥ 0.",
+         "Solve the following linear programming problem graphically: Minimize Z = 10x + 15y Subject to constraints: 4x + 3y ≥ 24, 4x + 5y ≤ 40 and x, y ≥ 0."
+   
+    
+    ],
+    36: [
+        "Calculate gross reproduction rate and net reproduction rate for the following data and comment on the result.<br><table><tr><th>Age group</th><th>Female population</th><th>Female births</th><th>Survival ratio</th></tr><tr><td>15-19</td><td>2000</td><td>24</td><td>0.9</td></tr><tr><td>20-24</td><td>3000</td><td>204</td><td>0.9</td></tr><tr><td>25-29</td><td>5000</td><td>400</td><td>0.9</td></tr><tr><td>30-34</td><td>6000</td><td>336</td><td>0.8</td></tr><tr><td>35-39</td><td>4000</td><td>120</td><td>0.8</td></tr><tr><td>40-44</td><td>3500</td><td>70</td><td>0.7</td></tr><tr><td>45-49</td><td>2500</td><td>15</td><td>0.7</td></tr></table>",
+         "(a) Compute the 'total fertility rate' (TFR) from the following data:<br><table><tr><th>Age group (years)</th><th>Female population</th><th>Live births</th></tr><tr><td>15-19</td><td>20000</td><td>500</td></tr><tr><td>20-24</td><td>18000</td><td>1800</td></tr><tr><td>25-29</td><td>15000</td><td>1800</td></tr><tr><td>30-34</td><td>13000</td><td>1430</td></tr><tr><td>35-39</td><td>11000</td><td>550</td></tr><tr><td>40-44</td><td>10000</td><td>294</td></tr><tr><td>45-49</td><td>8000</td><td>80</td></tr></table><br>(b) Calculate the 'standardized death rate' (SDR) for the following data:<br><table><tr><th>Age group (years)</th><th>Population</th><th>Deaths</th><th>Standard population</th></tr><tr><td>0-20</td><td>8000</td><td>80</td><td>7000</td></tr><tr><td>20-40</td><td>10000</td><td>90</td><td>9000</td></tr><tr><td>40-60</td><td>7000</td><td>105</td><td>5000</td></tr><tr><td>60 & above</td><td>5000</td><td>155</td><td>4000</td></tr></table>",
+         "Compute the standardized death rates from the following data and find which locality is more healthier.<br><table><tr><th>Age group (years)</th><th>Standard population</th><th>Locality A Pop</th><th>Locality A Deaths</th><th>Locality B Pop</th><th>Locality B Deaths</th></tr><tr><td>0-10</td><td>2000</td><td>4000</td><td>36</td><td>3000</td><td>27</td></tr><tr><td>10-40</td><td>16000</td><td>12000</td><td>120</td><td>20000</td><td>240</td></tr><tr><td>40-60</td><td>5000</td><td>6000</td><td>78</td><td>4000</td><td>56</td></tr><tr><td>60 & above</td><td>7000</td><td>8000</td><td>168</td><td>3000</td><td>60</td></tr></table>"
+   
+    
+    ],
+    37: [
+        "Show that Fisher's index number satisfies time reversal test and factor reversal test for the following data.<br><table><tr><th>Items</th><th>Price 2019</th><th>Quantity 2019</th><th>Price 2024</th><th>Quantity 2024</th></tr><tr><td>A</td><td>10</td><td>15</td><td>14</td><td>25</td></tr><tr><td>B</td><td>14</td><td>20</td><td>20</td><td>30</td></tr><tr><td>C</td><td>17</td><td>30</td><td>15</td><td>45</td></tr><tr><td>D</td><td>20</td><td>25</td><td>30</td><td>32</td></tr></table>",
+        "Calculate Marshall - Edgeworth's and Fisher's price index numbers from the following data:<br><table><tr><th>Item</th><th>Price 2019 (Rs)</th><th>Quantity 2019</th><th>Price 2024 (Rs)</th><th>Quantity 2024</th></tr><tr><td>A</td><td>10</td><td>12</td><td>19</td><td>15</td></tr><tr><td>B</td><td>14</td><td>15</td><td>22</td><td>19</td></tr><tr><td>C</td><td>21</td><td>25</td><td>19</td><td>37</td></tr><tr><td>D</td><td>27</td><td>20</td><td>36</td><td>25</td></tr></table>",
+        "(a) Calculate the value index number for the following data and comment on the result.<br><table><tr><th>Item</th><th>Price 2018</th><th>Quantity 2018</th><th>Price 2024</th><th>Quantity 2024</th></tr><tr><td>A</td><td>40</td><td>10</td><td>50</td><td>11</td></tr><tr><td>B</td><td>30</td><td>12</td><td>40</td><td>13</td></tr><tr><td>C</td><td>25</td><td>14</td><td>30</td><td>16</td></tr><tr><td>D</td><td>12</td><td>15</td><td>16</td><td>16</td></tr></table><br>(b) Compute the consumer price index number by using family budget method for the following data.<br><table><tr><th>Group</th><th>Base Year Price</th><th>Current Year Price</th><th>Weight</th></tr><tr><td>Food</td><td>4000</td><td>5000</td><td>20</td></tr><tr><td>Housing</td><td>3000</td><td>3600</td><td>25</td></tr><tr><td>Clothing</td><td>1500</td><td>1635</td><td>10</td></tr><tr><td>Fuel</td><td>2000</td><td>2600</td><td>15</td></tr><tr><td>Other</td><td>3500</td><td>4900</td><td>20</td></tr></table>"
+    
+    
+    ],
+    38: [
+        "(a) Find the trend values by five yearly moving averages for the following time series data:<br><table><tr><th>Year</th><td>2016</td><td>2017</td><td>2018</td><td>2019</td><td>2020</td><td>2021</td><td>2022</td><td>2023</td><td>2024</td></tr><tr><th>Value</th><td>40</td><td>44</td><td>41</td><td>47</td><td>43</td><td>55</td><td>54</td><td>56</td><td>62</td></tr></table><br>(b) Fit a straight line trend equation of the form \\(y=a+bx\\) to the time series data given below:<br><table><tr><th>Year</th><td>2014</td><td>2016</td><td>2018</td><td>2020</td><td>2022</td><td>2024</td></tr><tr><th>Profit (Lakh Rs)</th><td>12</td><td>10</td><td>20</td><td>25</td><td>30</td><td>41</td></tr></table>",
+        "Fit a quadratic trend equation of the form y = a + bx + cx² by the method of least squares to the following time series data. Estimate the value for 2024.<br><table><tr><th>Year</th><td>2019</td><td>2020</td><td>2021</td><td>2022</td><td>2023</td></tr><tr><th>Value</th><td>40</td><td>20</td><td>30</td><td>15</td><td>25</td></tr></table>",
+        "Fit an exponential curve of the type y = abˣ for the following time series data and estimate the value for the year 2025.<br><table><tr><th>Year</th><td>2020</td><td>2021</td><td>2022</td><td>2023</td><td>2024</td></tr><tr><th>Value</th><td>15</td><td>27</td><td>79</td><td>177</td><td>205</td></tr></table>"
+   
+    
+    ],
+
+
+
+}
+
+function getRandom(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+
+function generatePaper() {
+    const content = document.getElementById('content-area');
+    content.innerHTML = '';
+
+    // SECTION B
+    let html = `<div class="section-header">SECTION - B (Answer any FIVE) <span class="marks">5 x 2 = 10</span></div>`;
+    for(let i=17; i<=24; i++) { html += `<div class="question-block"><strong>${i})</strong> ${getRandom(questionBank[i])}</div>`; }
+
+    // SECTION C
+    html += `<div class="section-header">SECTION - C - Part I (Answer any FOUR) <span class="marks">4 x 5 = 20</span></div>`;
+    
+    for(let i=25; i<=31; i++) { html += `<div class="question-block"><strong>${i})</strong> ${getRandom(questionBank[i])}</div>`; }
+    // SECTION C
+    html += `<div class="section-header">SECTION - C - Part II (Answer any TWO) <span class="marks">2 x 5 = 10</span></div>`;
+    for(let i=32; i<=35; i++) { html += `<div class="question-block"><strong>${i})</strong> ${getRandom(questionBank[i])}</div>`; }
+
+    // SECTION D
+    html += `<div class="section-header">SECTION - D (Answer any TWO) <span class="marks">2 x 10 = 20</span></div>`;
+    for(let i=36; i<=38; i++) { html += `<div class="question-block"><strong>${i})</strong> ${getRandom(questionBank[i])}</div>`; }
+
+    content.innerHTML = html;
+    MathJax.typesetPromise();
+}
+
+generatePaper();
+</script>
+</body>
+</html>
