@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <title>SIM ACADEMY</title>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #fefefe;
+            margin: 0;
+            color: #333;
+        }
+
+        /* HEADER */
+        header {
+            background-color: #43A047;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .logo-title {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo-title img {
+            width: 50px;
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            margin: 0;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+        }
+
+        nav {
+            margin-top: 15px;
+        }
+
+        nav a {
+            color: white;
+            margin: 0 12px;
+            font-size: 0.9em;
+            font-weight: 500;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        nav a:hover {
+            color: #f4d6a0;
+        }
+
+        /* CONTAINER */
+        .container {
+            max-width: 950px;
+            margin: 40px auto;
+            padding: 40px;
+            background: #fff;
+            border-radius: 20px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .container h1 {
+            font-size: 2.5em;
+            margin-bottom: 40px;
+            color: #2F4F4F;
+            letter-spacing: 1.5px;
+        }
+
+        /* BUTTON GRID */
+        .button-grid {
+            display: none;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 25px;
+        }
+
+        .button-grid a {
+            padding: 30px;
+            color: white;
+            font-size: 20px;
+            font-weight: 600;
+            text-decoration: none;
+            border-radius: 15px;
+            box-shadow: 0 6px 8px rgba(0,0,0,0.1);
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .button-grid a:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px rgba(0,0,0,0.2);
+        }
+
+        /* Decorative circles */
+        .button-grid a::before {
+            content: '';
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            width: 40px;
+            height: 40px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 50%;
+        }
+
+        .button-grid a::after {
+            content: '';
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            width: 100px;
+            height: 100px;
+            background: rgba(255,255,255,0.3);
+            border-radius: 50%;
+            transition: 0.3s;
+        }
+
+        .button-grid a:hover::after {
+            top: -30px;
+            right: -30px;
+        }
+
+        /* BUTTON COLORS */
+        .ch1-test { background: linear-gradient(145deg, #76c7b7, #58a48c); }
+        .ch2-test { background: linear-gradient(145deg, #FBC490, #F19B5A); }
+        .ch3-test { background: linear-gradient(145deg, #E6BEAE, #E09A8A); }
+        .ch4-test { background: linear-gradient(145deg, #A2DA98, #7FC872); }
+        .ch5-test { background: linear-gradient(145deg, #8DC1DA, #66A4BF); }
+        .ch6-test { background: linear-gradient(145deg, #F2D1C9, #F0A6A6); }
+        .ch7-test { background: linear-gradient(145deg, #B6C99D, #9BB27D); }
+
+        .secondary-links a {
+            background: linear-gradient(145deg, #F4D6A0, #EBC691);
+            color: #333;
+        }
+
+        .mock-section a {
+            background: linear-gradient(145deg, #8bc34a, #689f38);
+        }
+
+        /* ACTIVE */
+        .active {
+            display: grid;
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <div class="logo-title">
+        <img src="logo.png" alt="SIM Academy Logo">
+        <h1>SIM ACADEMY</h1>
+    </div>
+    <nav>
+        <a id="maths-btn">Maths</a>
+        <a id="statistics-btn">Statistics</a>
+        <a id="mock-btn">Mock Papers</a>
+    </nav>
+</header>
+
+<div class="container">
+    <h1>Question Papers</h1>
+
+    <!-- MATHS -->
+    <div id="maths-section" class="button-grid active">
+        <a href="quiz.html" class="ch1-test">Conjugation Test</a>
+        <a href="passe.html" class="ch2-test">Passé Composé Test</a>
+        <a href="recent.html" class="ch3-test">Passé Récent Test</a>
+        <a href="futurprochetest.html" class="ch4-test">Futur Proche Test</a>
+        <a href="simple.html" class="ch5-test">Futur Simple Test</a>
+        <a href="imparfait.html" class="ch6-test">L’imparfait Test</a>
+        <a href="imperatif.html" class="ch7-test">L’impératif Test</a>
+    </div>
+
+    <!-- STATISTICS -->
+    <div id="statistics-section" class="button-grid secondary-links">
+        <a href="tenses.html">Pre Test</a>
+        <a href="conjugation.html">Conjugation</a>
+        <a href="pastparticiple.html">Past Participle</a>
+    </div>
+
+    <!-- MOCK PAPERS -->
+    <div id="mock-section" class="button-grid mock-section">
+        <a href="quizMath.html">Mock Paper Maths</a>
+        <a href="quizStats.html">Mock Paper Statistics</a>
+    </div>
+</div>
+
+<script>
+    const mathsSection = document.getElementById('maths-section');
+    const statisticsSection = document.getElementById('statistics-section');
+    const mockSection = document.getElementById('mock-section');
+
+    const mathsBtn = document.getElementById('maths-btn');
+    const statisticsBtn = document.getElementById('statistics-btn');
+    const mockBtn = document.getElementById('mock-btn');
+
+    function showSection(activeSection) {
+        mathsSection.classList.remove('active');
+        statisticsSection.classList.remove('active');
+        mockSection.classList.remove('active');
+
+        activeSection.classList.add('active');
+    }
+
+    mathsBtn.addEventListener('click', () => showSection(mathsSection));
+    statisticsBtn.addEventListener('click', () => showSection(statisticsSection));
+    mockBtn.addEventListener('click', () => showSection(mockSection));
+</script>
+
+</body>
+</html>
