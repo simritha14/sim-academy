@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Statistics Mastery Portal</title>
+    <style>
+        :root {
+            --primary: #1b5e20;
+            --bg: #f1f5f9;
+            --paper: #ffffff;
+            --text: #1a1a1a;
+        }
+
+        body {
+            font-family: 'Times New Roman', Times, serif;
+            margin: 0;
+            background-color: var(--bg);
+            color: var(--text);
+        }
+
+        /* --- Navigation Display --- */
+        nav {
+            background: white;
+            border-bottom: 6px solid var(--primary);
+            padding: 12px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-container {
+            
+            max-width: 1100px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        nav span {
+            font-family: sans-serif;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: #475569;
+            padding: 4px 10px;
+            background: #e2e8f0;
+            border-radius: 4px;
+            text-transform: uppercase;
+        }
+
+        /* --- Control Center --- */
+        .control-panel {
+            max-width: 900px;
+            margin: 25px auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+             border: 2px solid var(--primary);
+
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        button, select {
+            padding: 10px 16px;
+            font-family: sans-serif;
+            font-size: 0.9rem;
+            border-radius: 4px;
+            border: 1px solid #cbd5e1;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .btn-mixed { background: var(--primary); color: white; border: none; }
+        .btn-random { background: #475569; color: white; border: none; }
+        .btn-all { background: white; color: var(--primary); border: 2px solid var(--primary); }
+        .btn-print { background: #dc2626; color: white; border: none; margin-left: 10px; }
+
+        button:hover { opacity: 0.9; transform: translateY(-1px); }
+
+        /* --- Paper Styles --- */
+        .paper {
+            background: var(--paper);
+            max-width: 850px;
+            margin: 0 auto 50px auto;
+            padding: 50px 70px;
+            min-height: 297mm;
+            box-shadow: 0 0 15px rgba(0,0,0,0.05);
+        }
+
+        .paper-header { 
+            text-align: center; 
+            border-bottom: 2px solid black; 
+            margin-bottom: 30px; 
+            padding-bottom: 15px; 
+        }
+
+        .paper-header h1 { margin: 0; font-size: 1.8rem; }
+
+        .question-item {
+            display: grid;
+            grid-template-columns: 35px 1fr;
+            gap: 10px;
+            margin-bottom: 18px;
+            font-size: 1.2rem;
+            line-height: 1.4;
+        }
+
+        @media print {
+            nav, .control-panel { display: none; }
+            body { background: white; }
+            .paper { box-shadow: none; padding: 0; margin: 0; width: 100%; }
+        }
+    </style>
+</head>
+<body>
+
+
+
+<main>
+    <div class="control-panel">
+        <button class="btn-mixed" onclick="generateAllRandomly()">Mixed Exam (10 Qs)</button>
+        
+        <select id="chapterSelect">
+            <option value="1">Ch 1: Vital Statistics</option>
+            <option value="2">Ch 2: Index Numbers</option>
+            <option value="3">Ch 3: Time Series</option>
+            <option value="4">Ch 4: Interpolation</option>
+            <option value="5">Ch 5: Theoretical Distribution</option>
+            <option value="6">Ch 6: Statistical Inference</option>
+            <option value="7">Ch 7: Quality Control</option>
+            <option value="8">Ch 8: Operational Research</option>
+        </select>
+        
+        <button class="btn-random" onclick="generateFromChapter()">Random 10</button>
+        <button class="btn-all" onclick="showAllQuestions()">View Full Bank</button>
+        <button class="btn-print" onclick="window.print()">Print PDF</button>
+    </div>
+
+    <div class="paper">
+        <div class="paper-header">
+            <h1>Statistics</h1>
+            <p id="sub-header">Question Bank Assessment</p>
+        </div>
+        <div id="questions-container">
+            <p style="text-align: center; color: #666; font-style: italic; margin-top: 50px;">
+                Select a mode from the dashboard to populate the questions.
+            </p>
+        </div>
+    </div>
+</main>
+
+<script>
+const questionBank = {
+1: [
+    "The statistical study of human population is called _______________.",
+    "The births occurring to women of child bearing age is called __________.",
+    "The capacity of a woman to bear children is called ______________.",
+    "Generally the child bearing age for women is assumed in between ______________ years.",
+    "TFR of a population in a year is the total of _____ age specific fertility rates of females of child bearing age.",
+    "TFR divided by 1000 gives __________ number of children born in life time to one woman.",
+    "TFR is based on the assumption that all women __________ throughout the child bearing age.",
+    "The expected number of years that a new born baby would live is called __________.",
+    "In a life table, the size of the cohort is called _______.",
+    "What is demography?",
+    "Mention a vital event occurring in the human population.",
+    "Mention a method of obtaining vital statistics.",
+    "Write the formula for estimating the population between two census years.",
+    "Mention a use of vital statistics.",
+    "Define fertility.",
+    "Define fecundity.",
+    "Mention a measure of fertility.",
+    "Define crude birth rate.",
+    "Write the formula of crude birth rate.",
+    "Mention a merit of crude birth rate.",
+    "Mention a demerit of crude birth rate.",
+    "Define general fertility rate.",
+    "Generally, what is the child bearing age (germination period) of women?",
+    "Write the formula of general fertility rate.",
+    "Mention a merit of general fertility rate.",
+    "Mention a demerit of general fertility rate.",
+    "Define age specific fertility rate.",
+    "Write the formula of age specific fertility rate.",
+    "Mention a merit of age specific fertility rate.",
+    "Mention a demerit of age specific fertility rate.",
+    "What is total fertility rate?",
+    "Mention a merit of total fertility rate.",
+    "Mention a demerit of total fertility rate.",
+    "Mention a measure of reproduction rate.",
+    "Define gross reproduction rate.",
+    "If GRR is 1300, then find number of female births to a woman, if she is alive till the end of reproduction age.",
+    "Define net reproduction rate.",
+    "In a situation, if GRR per woman is greater than 1 and NRR per woman is less than 1 then what is your conclusion about population?",
+    "If NRR per woman is less than 1, then what it indicates about the population?",
+    "If NRR per woman is one, then what it indicates about the population?",
+    "If NRR per woman is more than 1, then what it indicates about the population?",
+    "Define mortality.",
+    "Mention a measure of mortality.",
+    "Define crude death rate.",
+    "Write the formula of crude death rate.",
+    "Mention a merit of crude death rate.",
+    "Mention a demerit of crude death rate.",
+    "Define age specific death rate.",
+    "Write the formula of age specific death rate.",
+    "Write a merit of age specific death rate.",
+    "Write a demerit of age specific death rate.",
+    "Define standardized death rate.",
+    "Which death rate is used to compare the health condition of two populations?",
+    "Write a merit of standardized death rate.",
+    "Write a demerit of standardized death rate.",
+    "Define infant mortality rate.",
+    "Write the formula of infant mortality rate.",
+    "Define neo-natal mortality rate.",
+    "Write the formula of neo-natal mortality rate.",
+    "Define maternal mortality rate.",
+    "Write the formula of maternal mortality rate.",
+    "Define life table.",
+    "Define cohort.",
+    "Define radix.",
+    "What is longevity?",
+    "Mention a use of life table.",
+    "Write the formula of calculating dx in life table.",
+    "Define mortality ratio.",
+    "Write the formula of mortality ratio.",
+    "Define survival ratio.",
+    "Write the formula of survival ratio.",
+    "Define expectation of life.",
+    "Write the formula of expectation of life."
+],
+    2: [
+    "Index numbers are known as ____________.",
+    "Index numbers are specialized type of __________.",
+    "The value of the index number for the base year is _________.",
+    "In the computation of index numbers, most preferred type of average is ____________.",
+    "The weight that is used in the construction of Laspeyre’s price index number is _____________.",
+    "The weight that is used in the construction of Paasche’s price index number is ____________.",
+    "Laspeyre’s quantity index number uses the _________ prices as weights.",
+    "Paasche’s quantity index number uses the ___________ prices as weights.",
+    "_________ index number shows an upward bias.",
+    "__________index number shows downward bias.",
+    "__________ index number satisfies both TRT and FRT.",
+    "__________ index number does not satisfy unit test.",
+    "The _______ price of the commodities used in the construction of cost of living index number.",
+    "A value weight means quantity produced multiplied by the __________ of the commodities.",
+    "In constructing index number, the ___________ of the product is not taken into consideration.",
+    "In index number what is meant by base year?",
+    "In index number what is meant by current year?",
+    "Define price relative.",
+    "Write the formula of price relative.",
+    "Write the formula of quantity relative.",
+    "What is the value of index number for the base year?",
+    "If the price during the current year is triple the price during the base year, what is the value of price relative?",
+    "If the price relative is 175, what would you conclude?",
+    "If the general price level goes up by 80% between 2000 and 2012, what is the index number for 2012 with base 2000?",
+    "If the quantity index number for current year is 80, then what would you conclude?",
+    "Mention a characteristic of index numbers.",
+    "Mention a use of index numbers.",
+    "Mention a limitation of index numbers.",
+    "Define price index number.",
+    "Mention two steps involved in the construction of index number.",
+    "Name the common average used in the construction of index numbers.",
+    "Which average is considered as the best average in the construction of index number?",
+    "Why GM is considered as the best average in the construction of index number?",
+    "What is simple aggregative price index number?",
+    "Write down the formula of simple aggregative price index number.",
+    "Write down the formula of simple arithmetic mean price index number.",
+    "Write down the formula of simple geometric mean price index number.",
+    "Write down the formula of weighted arithmetic mean price index number.",
+    "Write down the formula of weighted geometric mean price index number.",
+    "Write down the formula of Laspeyre’s price index number.",
+    "Which weight is used in the construction of Laspeyre’s price index number?",
+    "Write down the formula of Paasche’s price index number.",
+    "Which weight is used in the construction of Paasche’s price index number?",
+    "Write down the formula of Marshall-Edgeworth’s price index number.",
+    "Which system of weight is used in the construction of Marshall-Edgeworth’s price index number?",
+    "State the relation between Laspeyre’s, Paasche’s and Dorbish–Bowley’s index numbers.",
+    "Write down the formula of Dorbish – Bowley’s price index number.",
+    "State the relation between Laspeyer’s, Paasche’s and and Fisher’s index numbers.",
+    "Write down the formula of Fisher’s price index number.",
+    "Write down the formula for Kelly’s fixed weight price index number.",
+    "Which weight is used in the construction of Kelly’s price index number?",
+    "Write down the formula of Laspeyre’s quantity index number.",
+    "Which weight is used in the construction of Laspeyre’s quantity index number?",
+    "Write down the formula of Paasche’s quantity index number.",
+    "Which weight is used in the construction of Paasche’s quantity index number?",
+    "Write down the formula of Marshall-Edgeworth’s quantity index number.",
+    "Which system of weight is used in the construction of Marshall-Edgeworth’s quantity index number?",
+    "Write down the formula of Dorbish – Bowley’s quantity index number.",
+    "Write down the formula of Fisher’s quantity index number.",
+    "Write down the formula of value index number.",
+    "What do you mean by unit test?",
+    "Name the index number which does not satisfy unit test.",
+    "State the condition required to satisfy Time Reversal Test (TRT).",
+    "Name the index number which satisfies TRT.",
+    "Does Marshall - Edgeworth’s index number satisfies TRT?",
+    "State the condition required to satisfy Factor Reversal Test (FRT).",
+    "Name the index number which satisfies FRT.",
+    "Does Marshall - Edgeworth’s index number satisfies FRT?",
+    "Name the index number which satisfies both TRT and FRT.",
+    "State the condition required to satisfy circular test.",
+    "Name the index number which satisfies circular test.",
+    "Which index number shows upward bias?",
+    "Why Laspeyre’s price index number shows upward bias?",
+    "Which index number shows downward bias?",
+    "Why Paasche’s price index number shows downward bias?",
+    "Is Marshall - Edgeworth’s index number free from bias?",
+    "Why Fisher’s index number is free from bias?",
+    "Define consumer price index number (cost of living index number).",
+    "Write a use of consumer price index number.",
+    "Which price of the commodities is used in the construction of cost of living index number?",
+    "State a method used to compute consumer price index number.",
+    "Write the formula for computing CPI by aggregative expenditure method.",
+    "Write the formula for computing CPI by family budget method."
+],
+    3: [
+    "A graphic representation of time series data is called _______________.",
+    "The general tendency of the time series data to increase or to decrease or to remain constant during a long period of time is called __________.",
+    "Increase in the price of gold in the past many years is ____________ trend.",
+    "Decrease in the death rates in the past many years is a ___________ trend.",
+    "The regular, periodic and short term variation in a time series is called _____________ variation.",
+    "Seasonal ____________ are used for the measurement of seasonal variation.",
+    "The sudden unexpected variation in the time series is called ________ variation.",
+    "In the ____________ method the original time series data is divided into two equal parts and averages are calculated for both the parts.",
+    "The process of minimisation of sum of squared errors results in some equations which are called ______ equations.",
+    "Define time series.",
+    "Give an example for time series.",
+    "What is Historigram?",
+    "Mention a use of time series.",
+    "Mention two components of time series.",
+    "Define secular trend.",
+    "Give an example for secular trend.",
+    "Give an example for upward trend.",
+    "Give an example for downward trend.",
+    "Define seasonal variation.",
+    "Is seasonal variation of the time series predictable?",
+    "Mention a factor causing seasonal variation.",
+    "Give an example for seasonal variation.",
+    "Which component of a time series is associated with ‘Increase in the sales of text books in the month of June’?",
+    "Which index is used for the measurement of seasonal variation?",
+    "Define cyclical variation.",
+    "Define irregular (random) variation.",
+    "Mention a factor causing random variation.",
+    "Give an example for random variation.",
+    "Which component of a time series is associated with ‘Sudden increase in the price of vegetables due to strike’?",
+    "Which variation of the time series is unpredictable?",
+    "Name two methods of measuring trend.",
+    "Write a merit of method moving averages for measuring trend.",
+    "Write a demerit of method moving averages for measuring trend.",
+    "Write a merit of method least squares for measuring trend."
+],
+    4: ["Define interpolation.", "Define extrapolation."],
+    5: [
+    "The mean of a Bernoulli distribution is _____.",
+    "The variance of a Bernoulli distribution is _____.",
+    "The mean of a Binomial distribution is ______.",
+    "The variance of a Binomial distribution is _____.",
+    "Binomial distribution is positively skewed when p <____.",
+    "Binomial distribution is negatively skewed when p >____.",
+    "The mean of a Poisson distribution is ______.",
+    "In _________distribution, mean and variance are equal.",
+    "The area under the normal curve is_______.",
+    "In ___________distribution, variance and standard deviation are equal.",
+    "The mean of a Chi-square distribution is______.",
+    "The variance of a Chi-square distribution is ______.",
+    "The mean of a t- distribution is _____.",
+    "If parameter of a t- distribution is 4, the mean is _____.",
+    "In a___________, mean = median = mode = 0",
+    "The t – curve is ________shaped.",
+    "The t-curve is ____________ to the x – axis.",
+    "Define a Bernoulli variate.",
+    "Define a Bernoulli distribution.",
+    "Write down the probability mass function of a Bernoulli distribution.",
+    "Write the range of a Bernoulli distribution.",
+    "Give an example for Bernoulli variate.",
+    "Write a feature of Bernoulli distribution.",
+    "Write the parameter of a Bernoulli distribution.",
+    "Write the mean of a Bernoulli distribution.",
+    "Write the variance of a Bernoulli distribution.",
+    "Write the relationship between mean and variance of a Bernoulli distribution.",
+    "If X1, X2, ... Xn are independently identically distributed Bernoulli variates with parameter p, what is the distribution of X=X1+X2+...+Xn?",
+    "Define a binomial vaiate.",
+    "Define a binomial distribution.",
+    "Write down the p.m.f. of a binomial distribution.",
+    "Write down the range of a binomial distribution.",
+    "Give an example of binomial variate.",
+    "Write a feature of binomial distribution.",
+    "What are the parameters of binomial distribution?",
+    "Write the mean of a binomial distribution.",
+    "Write the variance of a binomial distribution.",
+    "Write the relationship between mean and variance of a binomial distribution.",
+    "Write the recurrence relation for successive probabilities in a binomial distribution.",
+    "Write the recurrence relation for successive frequencies in a binomial distribution.",
+    "For what value of ‘p’ binomial distribution is symmetrical?",
+    "Define a Poisson variate.",
+    "Define a Poisson distribution.",
+    "Write down the p.m.f. of a Poisson distribution.",
+    "Write the range of a Poisson distribution.",
+    "Give an example for Poisson variate.",
+    "Mention a feature of Poisson distribution.",
+    "What is the parameter of a Poisson distribution?",
+    "Write the mean of a Poisson distribution.",
+    "Write the variance of a Poisson distribution.",
+    "Write the relationship between mean and variance of a Poisson distribution.",
+    "In which distribution mean and variance are equal?",
+    "Which type of skewness a Poisson distribution has?",
+    "Under what condition Poisson distribution tends to normal distribution?",
+    "In a Poisson distribution if mean is 4, find S.D.",
+    "In a Poisson distribution if S.D. is 4, find mean.",
+    "Write the recurrence formula for successive probabilities in a Poisson distribution.",
+    "Write the recurrence formula for successive frequencies in a Poisson distribution.",
+    "Define a hyper geometric variate.",
+    "Define a hyper geometric distribution.",
+    "Write down the p.m.f. of a hyper geometric distribution.",
+    "Write the range of a hyper geometric distribution.",
+    "Mention a feature of hyper geometric distribution.",
+    "Write the mean of a hyper geometric distribution.",
+    "Write the variance of a hyper geometric distribution.",
+    "Define a normal variate.",
+    "Define a normal distribution.",
+    "Write down the p.d.f. of a normal distribution.",
+    "Write the range of a normal distribution.",
+    "Give an example for normal variate.",
+    "Write the mean of a normal distribution.",
+    "Write the variance of a normal distribution.",
+    "What is the value of coefficient of skewness (β1) for a normal distribution?",
+    "What is the value of coefficient of kurtosis (β2) for a normal distribution?",
+    "What is the probability that a normal variate takes a value greater than its mean?",
+    "The total area under the normal curve is ____.",
+    "If X is a normal variate with mean µ and S.D., what is the value of P(X < µ)?",
+    "Write down the area under the normal curve in 1σ neighbourhood of µ.",
+    "Write down the area under the normal curve in 2σ neighbourhood of µ.",
+    "Write down the area under the normal curve in 3σ neighbourhood of µ.",
+    "Define a standard normal variate.",
+    "Define a standard normal distribution.",
+    "Write down the p.d.f. of a standard normal distribution.",
+    "Write the mean of a standard normal distribution.",
+    "Write the variance of a standard normal distribution.",
+    "Name the distribution for which variance and S.D. are equal.",
+    "Define a chi-square distribution.",
+    "Write down the p.d.f. of a chi-square distribution.",
+    "Write the range of a chi-square distribution.",
+    "Define degrees of freedom.",
+    "Mention a feature of chi-square distribution.",
+    "Write the parameter of a chi-square distribution.",
+    "Write the mean of a chi-square distribution.",
+    "Write the variance of a chi-square distribution.",
+    "Write down the p.d.f. of a student’s t-distribution.",
+    "Write the range of a student’s t-distribution.",
+    "Write the parameter of a student’s t-distribution.",
+    "Mention a feature of student’s t-distribution.",
+    "Write the mean of a t-distribution.",
+    "Write the variance of a t-distribution."
+],
+   6: [
+    "A statistical constant of the population is called a____________.",
+    "A function of the sample values is called a____________.",
+    "The set of all the admissible values of the parameters is called ______________.",
+    "The standard deviation of the sampling distribution of a statistic is called its ____________.",
+    "Standard error of sample proportion (p) is ________.",
+    "Method of obtaining the most likely value of the population parameter is called __________.",
+    "Any statistic which is used to estimate an unknown parameter is called____________.",
+    "If a single value is proposed as an estimate of the unknown parameter, it is __________.",
+    "If an interval is proposed as an estimate of the unknown parameter, it is _____.",
+    "The boundary values of confidence interval are ______.",
+    "The best estimator of the population mean is ______.",
+    "The error that occurs by rejecting the null hypothesis when it is actually true is called __________.",
+    "The error that occurs by accepting the null hypothesis when it is actually not true is called ________.",
+    "The probability of rejecting the null hypothesis, when it is true is called ____________.",
+    "The probability of rejecting the null hypothesis, when it is not true is called __________.",
+    "__________is the set of those values of test statistic, which leads to the rejection of the null hypothesi.",
+    "__________is the set of those values of test statistic, which leads to the acceptance of the null hypothesis.",
+    "The statistical distribution of the test statistic under the null hypothesis is called____________.",
+    "A statistic based on whose distribution the testing of hypothesis is conducted is called__________.",
+    "Chi-square test for goodness of fit is always ________tailed test.",
+    "In chi-square test for goodness of fit, if any Ei is___________, it should be pooled with the adjacent frequency",
+    "Define parameter.",
+    "Define statistic.",
+    "What is parameter space?",
+    "What is sample space?",
+    "Define sampling distribution of a statistic.",
+    "Define standard error.",
+    "Write the formula of S.E.(x̅).",
+    "Write the formula of S.E.(x̅1 − x̅2).",
+    "Write the formula of S.E. (p).",
+    "Write the formula of S.E.(p1 - p2), when P1≠ P2.",
+    "Write the formula of S.E.(p1 - p2), when P1= P2.",
+    "Write a use of standard error.",
+    "What is statistical inference?",
+    "Mention a branch of statistical inference.",
+    "What is meant by estimation?",
+    "Define an estimator.",
+    "Define an estimate.",
+    "Define point estimation.",
+    "Define interval estimation.",
+    "Define confidence interval.",
+    "What are confidence limits?",
+    "What is confidence coefficient?",
+    "Define statistical hypothesis.",
+    "Give an example for statistical hypothesis.",
+    "Define null hypothesis.",
+    "Give an example for null hypothesis.",
+    "Define alternative hypothesis.",
+    "Give an example for alternative hypothesis.",
+    "What is type I error?",
+    "What is type II error?",
+    "Define size of a test.",
+    "What is level of significance?",
+    "Define power of a test.",
+    "What is critical region?",
+    "What is critical value?",
+    "What is two tailed test?",
+    "What is one tailed test?",
+    "Define null distribution.",
+    "Define test statistic.",
+    "Write an application of t-test.",
+    "Mention an application of chi-square test.",
+    "Write the degrees of freedom in testing of population variance for a sample of size n.",
+    "For the chi-square test, what is the condition for expected frequency?",
+    "When do you pool the expected frequencies in testing of goodness of fit?",
+    "What is the value of degrees of freedom in testing of independence of attributes in 2x2 contingency table?"
+],
+   7: [
+    "Statistical quality control helps in detecting ____________type of variation.",
+    "The process of inspection of manufactured lot for acceptability is called_______.",
+    "A _________is a quality characteristic which does not conform to specifications.",
+    "An item having one or more defects is a _________item.",
+    "Controlling the quality of goods during the manufacturing process itself is called _____________.",
+    "In statistical quality control, ameasurable quality characteristic, which varies from unit to unit, is __________.",
+    "A qualitative characteristic which cannot be measured and can only be identified by its presence or absence is an __________.",
+    "A small amount of variation for which no specific cause can be attributed is termed as _________________of variation.",
+    "________________is a graphical device which is used to study and verify whether the production process isunder statistical control or not.",
+    "In statistical quality control, X̅ – chart and __________are used for the control of variables.",
+    "In statistical quality control, __________is used for number of defectives.",
+    "In statistical quality control, __________is used for number of defects.",
+    "For R-chart if σ’ is known, then _________ is the central line.",
+    "Define Statistical Quality Control.",
+    "Mention a type of cause for variation in a manufacturing process.",
+    "What are chance causes?",
+    "What are assignable causes?",
+    "Which type of ‘cause of variation’ is detected by SQC?",
+    "Which cause of variation cannot be detected by SQC?",
+    "Mention an advantage of SQC.",
+    "What do you mean by process control?",
+    "What do you mean by product control?",
+    "What is a defect in SQC?",
+    "Give an example for defect.",
+    "What are defectives in SQC?",
+    "Give an example for defectives.",
+    "What is a control chart?",
+    "What is upper control limit?",
+    "What is lower control limit?",
+    "Mention different types of control charts.",
+    "Name control charts for variables.",
+    "Name control charts for attributes.",
+    "Name the control chart used for number of defectives.",
+    "Name the control chart used for number of defects per unit.",
+    "In X̅- chart, if one of the sample mean lies outside the control limits, what would you conclude?",
+    "In a control chart, if one point lies outside the control lines, what is your inference?",
+    "Define Acceptance sampling.",
+    "Write an advantage of ‘Acceptance sampling’.",
+    "Write a disadvantage of ‘Acceptance sampling’."
+],
+   8: [
+    "Graphical solution to L.P.P. lies in the___________.",
+    "____________is the area which satisfies all the constraints and also non-negativity restrictions.",
+    "___________problem helps in shipment of quantities from various sources to different destinations at a minimum cost.",
+    "A Transportation problem is balanced if and only if _______.",
+    "In a T.P., (m+n–1) variables are known as __________variables.",
+    "When the number of positive allocations in any B.F.S. is ________(m+n–1), the solution is said to be degenerate.",
+    "When the number of positive allocations in any B.F.S. is ________(m+n–1), the solution is said to be non-degenerate.",
+    "_________theory helps in deciding the best strategy in conflicting situations.",
+    "The _________of a player is the pre-determined rule by which a player determines his course of action.",
+    "A game is said to be fair if the value of the game is________.",
+    "__________is the table showing how payments are to be made at the end of each game.",
+    "The maximum of the row minimums is known as __________.",
+    "The minimum of the column maximums are known as ________.",
+    "The position of the pay-off matrix where maximin and minimax coincide is the __________.",
+    "The pay off at the position of the saddle point is called __________of a game.",
+    "The cost associated with the maintenance of an inventory until they are sold or used is called __________.",
+    "The time gap between the placing of order and arrival of goods at inventory is the ________.",
+    "The time period over which the inventory control is planned is called the __________.",
+    "Inventory reduces the _______cost.",
+    "Write a scope of Operations Research.",
+    "Define linear programming problem.",
+    "In L.P.P define decision variables.",
+    "In L.P.P define objective function.",
+    "In L.P.P define solution.",
+    "In L.P.P define feasible solution.",
+    "In L.P.P define optimal solution.",
+    "In L.P.P is an optimal solution always a feasible solution?",
+    "Mention a method of solving Linear Programming Problem.",
+    "When an L.P.P is said to have unique solution?",
+    "When an L.P.P is said to have multiple solutions?",
+    "When an L.P.P is said to have unbounded solution?",
+    "When an L.P.P is said to have no solution?",
+    "In graphical method why feasible solution of L.P.P lies in the first quadrant?",
+    "In a T.P, define a feasible solution.",
+    "Define basic feasible solution (BFS) of a T.P.",
+    "When do you say that a basic feasible solution of T.P is degenerate?",
+    "When do you say that a basic feasible solution of T.P is non-degenerate?",
+    "Define optimal solution of a T.P.",
+    "When T.P is said to be balanced?",
+    "When a Transportation Problem said to be unbalanced?",
+    "Write the formula of total cost of T.P.",
+    "Mention a method of obtaining initial basic feasible solution to a T.P.",
+    "Write a property of a competitive game.",
+    "What is n-person game?",
+    "What is two-person game?",
+    "What do you mean by zero-sum game?",
+    "Define rectangular game.",
+    "Define strategy in a game.",
+    "What do you mean by pure strategy in a game?",
+    "What do you mean by a mixed strategy in a game?",
+    "In a rectangular game, what is meant by pay-off matrix?",
+    "What is meant by maximin of a game?",
+    "What is meant by minimax of a game?",
+    "What is a saddle point?",
+    "When do you say that a game has saddle point?",
+    "What do you mean by the value of a game?",
+    "When the game is said to be fair?",
+    "If value of the game is -6, is the game fair?",
+    "In a rectangular game, if gain of a player is Rs.3 then what is the loss of the other?",
+    "If in a game the pay-off at saddle point is 4, what is the value of minimax?",
+    "Mention a method of solving a rectangular game.",
+    "What do you mean by replacement theory?",
+    "Mention a need for replacement of equipment.",
+    "When do you suggest for replacement of equipment which deteriorates with age?",
+    "Write the formula of to-date average annual cost.",
+    "What do you mean by inventory?",
+    "Mention one objective of inventory.",
+    "In inventory, what is holding cost?",
+    "In inventory, what do you mean by set-up cost?",
+    "In inventory, what do you mean by ordering cost?",
+    "In inventory, what do you mean by shortage cost?",
+    "In inventory, what is capital cost?",
+    "Mention a type of variable associated with inventory.",
+    "What is meant by stock replenishment in inventory?",
+    "Define uniform demand in inventory.",
+    "In inventory, what is lead time?",
+    "What is E.O.Q?",
+    "What is E.L.S?",
+    "Mention an advantage of inventory.",
+    "Write a disadvantage of inventory.",
+    "Mention a category of inventory model."
+]
+};
+
+function display(qs, title) {
+    const container = document.getElementById('questions-container');
+    document.getElementById('sub-header').innerText = title;
+    container.innerHTML = qs.map((q, i) => `
+        <div class="question-item">
+            <span class="q-num">${i + 1}.</span>
+            <span class="q-text">${q}</span>
+        </div>
+    `).join('');
+}
+
+function generateFromChapter() {
+    const id = document.getElementById('chapterSelect').value;
+    const selected = [...questionBank[id]].sort(() => 0.5 - Math.random()).slice(0, 10);
+    display(selected, `Ch ${id} - Random 10 Selection`);
+}
+
+function showAllQuestions() {
+    const id = document.getElementById('chapterSelect').value;
+    display(questionBank[id], `Ch ${id} - Full Question Bank`);
+}
+
+function generateAllRandomly() {
+    let all = [];
+    Object.values(questionBank).forEach(c => all = all.concat(c));
+    const selected = all.sort(() => 0.5 - Math.random()).slice(0, 10);
+    display(selected, "Comprehensive Mixed Exam");
+}
+</script>
+
+</body>
+</html>
