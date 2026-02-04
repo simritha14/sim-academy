@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="icon" href="books.ico" type="image/x-icon">
+
+    <title>Statistics test</title>
+    <style>
+        :root {
+            --primary: #1b5e20;
+            --accent: #d32f2f;
+            --bg: #f1f5f9;
+        }
+
+        body { font-family: 'Times New Roman', Times, serif; background: var(--bg); margin: 0; padding: 20px; color: #333; }
+        
+        .no-print {
+            max-width: 900px;
+            margin: 0 auto 30px;
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .exam-paper {
+            background: white;
+            max-width: 850px;
+            margin: 0 auto;
+            padding: 40px 60px;
+            min-height: 1000px;
+            border: 1px solid #ddd;
+        }
+
+        .header { text-align: center; border-bottom: 2px solid #000; margin-bottom: 30px; padding-bottom: 10px; }
+        .header h1 { margin: 0; font-size: 1.8rem; text-transform: uppercase; }
+        
+        .section-title { 
+            font-weight: bold; 
+            text-transform: uppercase;
+            margin-top: 30px; 
+            margin-bottom: 15px; 
+            border-bottom: 1px solid #eee;
+            font-size: 1rem;
+        }
+        
+        .q-row { display: flex; margin-bottom: 15px; line-height: 1.6; font-size: 1.1rem; }
+        .q-num { min-width: 40px; font-weight: bold; }
+
+        button {
+            padding: 12px 20px;
+            margin: 5px;
+            cursor: pointer;
+            border: none;
+            border-radius: 6px;
+            font-weight: bold;
+            transition: all 0.2s;
+        }
+        .btn-gen { background: var(--primary); color: white; }
+        .btn-all { background: var(--accent); color: white; }
+        .btn-print { background: #333; color: white; }
+
+        select { padding: 10px 16px;
+            font-family: sans-serif;
+            font-size: 0.9rem;
+            border-radius: 4px;
+            border: 1px solid #cbd5e1;
+            cursor: pointer;
+            font-weight: 600; }
+
+        @media print {
+            .no-print { display: none; }
+            body { padding: 0; background: white; }
+            .exam-paper { border: none; width: 100%; padding: 0; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="no-print">
+        <select id="chapterSelect">
+            <option value="1">Ch 1: Vital Statistics</option>
+            <option value="2">Ch 2: Index Numbers</option>
+            <option value="3">Ch 3: Time Series</option>
+            <option value="4">Ch 4: Interpolation</option>
+            <option value="5">Ch 5: Theoretical Distribution</option>
+            <option value="6">Ch 6: Statistical Inference</option>
+            <option value="7">Ch 7: Quality Control</option>
+            <option value="8">Ch 8: Operational Research</option>
+        </select>
+    <button class="btn-gen" onclick="generateExam('single')">Generate Chapter Test</button>
+    <button class="btn-all" onclick="generateExam('all')">Random All Chs</button>
+    <button class="btn-print" onclick="window.print()">Print to PDF</button>
+</div>
+
+<div class="exam-paper" id="paper">
+    <div class="header">
+        <h1 id="examTitle">Assessment Paper</h1>
+        <p><strong>Subject:</strong> Statistics | <strong>Marks:</strong> 20</p>
+    </div>
+    <div id="content">
+        <p style="text-align:center; padding: 50px; color:#666;">Choose a generation mode above.</p>
+    </div>
+</div>
+
+<script>
+const fillUps = {
+    1: ["The statistical study of human population is called _______________.", "The births occurring to women of child bearing age is called __________.", "The capacity of a woman to bear children is called ______________.", "TFR divided by 1000 gives __________ number of children born in life time to one woman.", "In a life table, the size of the cohort is called _______."],
+    2: ["Index numbers are known as ____________.", "The value of the index number for the base year is _________.", "_________ index number shows an upward bias.", "__________index number shows downward bias.", "__________ index number satisfies both TRT and FRT."],
+    3: ["A graphic representation of time series data is called _______________.", "The general tendency of time series data is called __________.", "Seasonal ____________ are used for the measurement of seasonal variation.", "Sudden unexpected variation is called ________ variation."],
+    5: ["The mean of a Bernoulli distribution is _____.", "The variance of a Bernoulli distribution is _____.", "In _________distribution, mean and variance are equal.", "The area under the normal curve is_______."],
+    6: ["A statistical constant of the population is called a____________.", "A function of the sample values is called a____________.", "Standard error of sample proportion (p) is ________.", "The boundary values of confidence interval are ______."],
+    7: ["Statistical quality control helps in detecting ____________type of variation.", "Process of inspection for acceptability is called_______.", "In SQC, __________is used for number of defectives."],
+    8: ["Graphical solution to L.P.P. lies in the___________.", "Transportation problem is balanced if and only if _______.", "A game is fair if the value of the game is________."]
+};
+
+const definitions1M = {
+    1: ["What is demography?", "Define fertility.", "Define fecundity.", "Define mortality.", "Define radix."],
+    2: ["What is meant by base year?", "Define price relative.", "Define price index number.", "What is unit test?"],
+    3: ["Define time series.", "What is Historigram?", "Define secular trend.", "Define cyclical variation."],
+    5: ["Define Bernoulli variate.", "Define binomial distribution.", "Define Poisson distribution.", "Define degrees of freedom."],
+    6: ["Define parameter.", "Define statistic.", "What is statistical inference?", "Define an estimator."],
+    7: ["Define SQC.", "What are chance causes?", "What is a control chart?", "Define Acceptance sampling."],
+    8: ["Define LPP.", "Define objective function.", "What is a saddle point?", "What is E.O.Q?"]
+};
+
+const conceptual2M = {
+    3: [
+        "Define time series. Give an example.",
+        "Mention two uses of time series.",
+        "Mention four components of time series.",
+        "Define secular trend. Give an example.",
+        "Define seasonal variation. Give an example.",
+        "What are the different phases in a business cycle?",
+        "Diagrammatically represent ‘Business Cycle’ with stages.",
+        "Define random variation. Give an example.",
+        "Mention a factor causing following variations: i) Seasonal variation ii) Irregular variation",
+        "Which component of a time series is associated with: (a) Fall in death rate due to science (b) Increase in employment during harvest?",
+        "Name four methods of measuring trend.",
+        "State two conditions of least squares method of measuring trend.",
+        "Write down the normal equations for fitting linear trend."
+    ],
+    4: [
+        "Differentiate between interpolation and extrapolation.",
+        "Write two assumptions of interpolation and extrapolation.",
+        "Mention two methods of interpolation.",
+        "Write down the conditions for applying the Binomial expansion method of interpolation and extrapolation.",
+        "Write down the conditions for applying Newton’s advancing difference method of interpolation."
+    ],
+    5: [
+        "Write the mean and variance of a Bernoulli distribution.",
+        "What is meant by Bernoulli trial? Give an example.",
+        "Write down two features of binomial distribution.",
+        "Write mean and variance of a binomial distribution.",
+        "‘The mean and variance of a binomial distribution are 4 and 5 respectively’. Comment on this statement with reason.",
+        "Under which conditions does the binomial distribution tend to Poisson distribution?",
+        "Under which conditions does the binomial distribution tend to normal distribution?",
+        "Mention two features of Poisson distribution.",
+        "Mention two features of hyper geometric distribution.",
+        "Write the parameters of a hyper geometric distribution.",
+        "Write the mean and variance of a hyper geometric distribution.",
+        "Under what conditions does the hyper geometric distribution tend to binomial distribution?",
+        "Write the parameters of a normal distribution.",
+        "Write the mean and variance of a normal distribution.",
+        "Mention two features of chi-square distribution.",
+        "Write the mean and variance of a chi-square distribution.",
+        "Mention two features of student’s t-distribution.",
+        "Write the mean and variance of a student’s t-distribution."
+    ],
+    6: [
+        "Define parameter and statistic.",
+        "Write two uses of standard error.",
+        "Mention two branches of statistical inference.",
+        "Mention two types of estimation.",
+        "What are point and interval estimations?",
+        "What is statistical hypothesis? Give an example.",
+        "What is null hypothesis? Give an example.",
+        "What is alternative hypothesis? Give an example.",
+        "Define type I and type II errors.",
+        "Define size of a test and power of a test.",
+        "What are one tailed and two tailed tests?",
+        "Write two applications of t-test.",
+        "Write down the t-test statistic and degrees of freedom in case of test for mean.",
+        "Write down the t-test statistic and degrees of freedom for equality of means of two independent samples.",
+        "Write down the test statistic and degrees of freedom of paired t-test.",
+        "Mention two applications of χ2- test.",
+        "Write the χ2- test statistic with degrees of freedom in testing of population variance for n sample size.",
+        "Write the χ2- test statistic with degrees of freedom in testing of goodness of fit.",
+        "Mention two conditions for applying χ2- test of goodness of fit.",
+        "In a χ2- test for goodness of fit, if there are 6 observations and one parameter is estimated, find d.f.",
+        "Write the χ2- test statistic with degrees of freedom in testing of independence of attributes in 2x2 table.",
+        "Write two conditions for applying χ2- test of independence of attribute."
+    ],
+    7: [
+        "Mention two types of causes for variation in a manufacturing process.",
+        "What are chance and assignable causes?",
+        "Mention two advantages of SQC.",
+        "What do you mean by product control and process control?",
+        "In SQC define variable and attribute.",
+        "In SQC what is a defect? Give an example.",
+        "In SQC what are defectives? Give an example.",
+        "In SQC what are defect and defectives?",
+        "Give one example each for defect and defectives.",
+        "Name the control charts for variables and attribute.",
+        "Write the upper and lower control limits for X̅- chart, when standards are known.",
+        "Write two advantages of acceptance sampling.",
+        "Write relative merits and demerits of single sampling plan and double sampling plan."
+    ],
+    8: [
+        "Give the general form of L.P.P. in matrix notation.",
+        "Mention two methods of solving Linear Programming Problem.",
+        "In which quadrant does the feasible solution of the L.P.P lie in graphical method? Give reason.",
+        "Define a transportation problem.",
+        "What do you mean by degenerate and non-degenerate solutions in T.P?",
+        "Mention two methods of obtaining initial basic feasible solution for a T.P.",
+        "Write two properties of a competitive game.",
+        "What are pure and mixed strategies in a game?",
+        "Explain maximin and minimax of a game.",
+        "What is a saddle point? When do you say that a game has saddle point?",
+        "What do you mean by the value of a game? When the game is fair?",
+        "Mention two methods of solving a rectangular game.",
+        "Mention two needs for replacement of equipments.",
+        "Mention two types of costs associated with inventory.",
+        "Mention two advantages of inventory.",
+        "State the assumptions of E.O.Q Model – I.",
+        "State the assumptions of E.O.Q Model – II."
+    ]
+};
+
+function getRandom(arr, n) {
+    if (!arr || arr.length === 0) return [];
+    const shuffled = [...arr].sort(() => 0.5 - Math.random());
+    return shuffled.slice(0, n);
+}
+
+function generateExam(mode) {
+    const ch = document.getElementById('chapterSelect').value;
+    let poolA = [], poolB = [], poolC = [];
+
+    if (mode === 'all') {
+        document.getElementById('examTitle').innerText = "Full Subject Model Paper";
+        // Merge all chapter questions into one pool
+        Object.values(fillUps).forEach(arr => poolA = poolA.concat(arr));
+        Object.values(definitions1M).forEach(arr => poolB = poolB.concat(arr));
+        Object.values(conceptual2M).forEach(arr => poolC = poolC.concat(arr));
+    } else {
+        const chName = document.getElementById('chapterSelect').options[document.getElementById('chapterSelect').selectedIndex].text;
+        document.getElementById('examTitle').innerText = chName;
+        poolA = fillUps[ch];
+        poolB = definitions1M[ch];
+        poolC = conceptual2M[ch];
+    }
+
+    const secA = getRandom(poolA, 5);
+    const secB = getRandom(poolB, 5);
+    const secC = getRandom(poolC, 5);
+
+    let html = `<div class="section-title">Section A: Fill in the blanks (1 Mark)</div>`;
+    secA.forEach((q, i) => html += `<div class="q-row"><div class="q-num">${i+1}.</div><div>${q}</div></div>`);
+
+    html += `<div class="section-title">Section B: Short Definitions (1 Mark)</div>`;
+    secB.forEach((q, i) => html += `<div class="q-row"><div class="q-num">${i+6}.</div><div>${q}</div></div>`);
+
+    html += `<div class="section-title">Section C: Conceptual Questions (2 Marks)</div>`;
+    secC.forEach((q, i) => html += `<div class="q-row"><div class="q-num">${i+11}.</div><div>${q}</div></div>`);
+
+    document.getElementById('content').innerHTML = html;
+}
+</script>
+</body>
+</html>
