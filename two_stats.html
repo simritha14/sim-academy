@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="books.ico" type="image/x-icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stats 2 Markers</title>
+    <style>
+        :root {
+            --primary: #1b5e20;
+            --bg: #f1f5f9;
+            --paper: #ffffff;
+            --text: #1a1a1a;
+        }
+
+        body {
+            font-family: 'Times New Roman', Times, serif;
+            margin: 0;
+            background-color: var(--bg);
+            color: var(--text);
+        }
+
+        /* --- Navigation Display --- */
+        nav {
+            background: white;
+            border-bottom: 6px solid var(--primary);
+            padding: 12px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-container {
+            
+            max-width: 1100px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        nav span {
+            font-family: sans-serif;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: #475569;
+            padding: 4px 10px;
+            background: #e2e8f0;
+            border-radius: 4px;
+            text-transform: uppercase;
+        }
+
+        /* --- Control Center --- */
+        .control-panel {
+            max-width: 900px;
+            margin: 25px auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+             border: 2px solid var(--primary);
+
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        button, select {
+            padding: 10px 16px;
+            font-family: sans-serif;
+            font-size: 0.9rem;
+            border-radius: 4px;
+            border: 1px solid #cbd5e1;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .btn-mixed { background: var(--primary); color: white; border: none; }
+        .btn-random { background: #475569; color: white; border: none; }
+        .btn-all { background: white; color: var(--primary); border: 2px solid var(--primary); }
+        .btn-print { background: #dc2626; color: white; border: none; margin-left: 10px; }
+
+        button:hover { opacity: 0.9; transform: translateY(-1px); }
+
+        /* --- Paper Styles --- */
+        .paper {
+            background: var(--paper);
+            max-width: 850px;
+            margin: 0 auto 50px auto;
+            padding: 50px 70px;
+            min-height: 297mm;
+            box-shadow: 0 0 15px rgba(0,0,0,0.05);
+        }
+
+        .paper-header { 
+            text-align: center; 
+            border-bottom: 2px solid black; 
+            margin-bottom: 30px; 
+            padding-bottom: 15px; 
+        }
+
+        .paper-header h1 { margin: 0; font-size: 1.8rem; }
+
+        .question-item {
+            display: grid;
+            grid-template-columns: 35px 1fr;
+            gap: 10px;
+            margin-bottom: 18px;
+            font-size: 1.2rem;
+            line-height: 1.4;
+        }
+
+        @media print {
+            nav, .control-panel { display: none; }
+            body { background: white; }
+            .paper { box-shadow: none; padding: 0; margin: 0; width: 100%; }
+        }
+    </style>
+</head>
+<body>
+
+
+
+<main>
+    <div class="control-panel">
+        <button class="btn-mixed" onclick="generateAllRandomly()">Mixed Exam (10 Qs)</button>
+        
+        <select id="chapterSelect">
+            <option value="3">Ch 3: Time Series </option>
+            <option value="4">Ch 4: Interpolation </option>
+            <option value="5">Ch 5: Theoretical Distribution </option>
+            <option value="6">Ch 6: Statistical Inference </option>
+            <option value="7">Ch 7: Quality Control </option>
+            <option value="8">Ch 8: Operational Research </option>
+        </select>
+        
+        <button class="btn-random" onclick="generateFromChapter()">Random 10</button>
+        <button class="btn-all" onclick="showAllQuestions()">View Full Bank</button>
+        <button class="btn-print" onclick="window.print()">Print PDF</button>
+    </div>
+
+    <div class="paper">
+        <div class="paper-header">
+            <h1>Statistics 2 Markers</h1>
+            <p id="sub-header">Question Bank Assessment</p>
+        </div>
+        <div id="questions-container">
+            <p style="text-align: center; color: #666; font-style: italic; margin-top: 50px;">
+                Select a mode from the dashboard to populate the questions.
+            </p>
+        </div>
+    </div>
+</main>
+
+<script>
+const questionBank = {
+    3: [
+        "Define time series. Give an example.",
+        "Mention two uses of time series.",
+        "Mention four components of time series.",
+        "Define secular trend. Give an example.",
+        "Define seasonal variation. Give an example.",
+        "What are the different phases in a business cycle?",
+        "Diagrammatically represent ‘Business Cycle’ with stages.",
+        "Define random variation. Give an example.",
+        "Mention a factor causing following variations: i) Seasonal variation ii) Irregular variation",
+        "Which component of a time series is associated with: (a) Fall in death rate due to science (b) Increase in employment during harvest?",
+        "Name four methods of measuring trend.",
+        "State two conditions of least squares method of measuring trend.",
+        "Write down the normal equations for fitting linear trend."
+    ],
+    4: [
+        "Differentiate between interpolation and extrapolation.",
+        "Write two assumptions of interpolation and extrapolation.",
+        "Mention two methods of interpolation.",
+        "Write down the conditions for applying the Binomial expansion method of interpolation and extrapolation.",
+        "Write down the conditions for applying Newton’s advancing difference method of interpolation."
+    ],
+    5: [
+        "Write the mean and variance of a Bernoulli distribution.",
+        "What is meant by Bernoulli trial? Give an example.",
+        "Write down two features of binomial distribution.",
+        "Write mean and variance of a binomial distribution.",
+        "‘The mean and variance of a binomial distribution are 4 and 5 respectively’. Comment on this statement with reason.",
+        "Under which conditions does the binomial distribution tend to Poisson distribution?",
+        "Under which conditions does the binomial distribution tend to normal distribution?",
+        "Mention two features of Poisson distribution.",
+        "Mention two features of hyper geometric distribution.",
+        "Write the parameters of a hyper geometric distribution.",
+        "Write the mean and variance of a hyper geometric distribution.",
+        "Under what conditions does the hyper geometric distribution tend to binomial distribution?",
+        "Write the parameters of a normal distribution.",
+        "Write the mean and variance of a normal distribution.",
+        "Mention two features of chi-square distribution.",
+        "Write the mean and variance of a chi-square distribution.",
+        "Mention two features of student’s t-distribution.",
+        "Write the mean and variance of a student’s t-distribution."
+    ],
+    6: [
+        "Define parameter and statistic.",
+        "Write two uses of standard error.",
+        "Mention two branches of statistical inference.",
+        "Mention two types of estimation.",
+        "What are point and interval estimations?",
+        "What is statistical hypothesis? Give an example.",
+        "What is null hypothesis? Give an example.",
+        "What is alternative hypothesis? Give an example.",
+        "Define type I and type II errors.",
+        "Define size of a test and power of a test.",
+        "What are one tailed and two tailed tests?",
+        "Write two applications of t-test.",
+        "Write down the t-test statistic and degrees of freedom in case of test for mean.",
+        "Write down the t-test statistic and degrees of freedom for equality of means of two independent samples.",
+        "Write down the test statistic and degrees of freedom of paired t-test.",
+        "Mention two applications of χ2- test.",
+        "Write the χ2- test statistic with degrees of freedom in testing of population variance for n sample size.",
+        "Write the χ2- test statistic with degrees of freedom in testing of goodness of fit.",
+        "Mention two conditions for applying χ2- test of goodness of fit.",
+        "In a χ2- test for goodness of fit, if there are 6 observations and one parameter is estimated, find d.f.",
+        "Write the χ2- test statistic with degrees of freedom in testing of independence of attributes in 2x2 table.",
+        "Write two conditions for applying χ2- test of independence of attribute."
+    ],
+    7: [
+        "Mention two types of causes for variation in a manufacturing process.",
+        "What are chance and assignable causes?",
+        "Mention two advantages of SQC.",
+        "What do you mean by product control and process control?",
+        "In SQC define variable and attribute.",
+        "In SQC what is a defect? Give an example.",
+        "In SQC what are defectives? Give an example.",
+        "In SQC what are defect and defectives?",
+        "Give one example each for defect and defectives.",
+        "Name the control charts for variables and attribute.",
+        "Write the upper and lower control limits for X̅- chart, when standards are known.",
+        "Write two advantages of acceptance sampling.",
+        "Write relative merits and demerits of single sampling plan and double sampling plan."
+    ],
+    8: [
+        "Give the general form of L.P.P. in matrix notation.",
+        "Mention two methods of solving Linear Programming Problem.",
+        "In which quadrant does the feasible solution of the L.P.P lie in graphical method? Give reason.",
+        "Define a transportation problem.",
+        "What do you mean by degenerate and non-degenerate solutions in T.P?",
+        "Mention two methods of obtaining initial basic feasible solution for a T.P.",
+        "Write two properties of a competitive game.",
+        "What are pure and mixed strategies in a game?",
+        "Explain maximin and minimax of a game.",
+        "What is a saddle point? When do you say that a game has saddle point?",
+        "What do you mean by the value of a game? When the game is fair?",
+        "Mention two methods of solving a rectangular game.",
+        "Mention two needs for replacement of equipments.",
+        "Mention two types of costs associated with inventory.",
+        "Mention two advantages of inventory.",
+        "State the assumptions of E.O.Q Model – I.",
+        "State the assumptions of E.O.Q Model – II."
+    ]
+};
+function display(qs, title) {
+    const container = document.getElementById('questions-container');
+    document.getElementById('sub-header').innerText = title;
+    container.innerHTML = qs.map((q, i) => `
+        <div class="question-item">
+            <span class="q-num">${i + 1}.</span>
+            <span class="q-text">${q}</span>
+        </div>
+    `).join('');
+}
+
+function generateFromChapter() {
+    const id = document.getElementById('chapterSelect').value;
+    const selected = [...questionBank[id]].sort(() => 0.5 - Math.random()).slice(0, 10);
+    display(selected, `Ch ${id} - Random 10 Selection`);
+}
+
+function showAllQuestions() {
+    const id = document.getElementById('chapterSelect').value;
+    display(questionBank[id], `Ch ${id} - Full Question Bank`);
+}
+
+function generateAllRandomly() {
+    let all = [];
+    Object.values(questionBank).forEach(c => all = all.concat(c));
+    const selected = all.sort(() => 0.5 - Math.random()).slice(0, 10);
+    display(selected, "Comprehensive Mixed Exam");
+}
+</script>
+
+</body>
+</html>
