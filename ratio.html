@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="books.ico" type="image/x-icon">
+    <title>RATIOS AND PROPORTIONS</title>
+    
+    <script>
+        window.MathJax = {
+            tex: { inlineMath: [['$', '$'], ['\\(', '\\)']], displayMath: [['$$', '$$']] },
+            svg: { fontCache: 'global' }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <style>
+        body { 
+            font-family: 'Times New Roman', Times, serif; 
+            background: #f0f2f5; 
+            margin: 0; 
+            padding: 30px; 
+            color: #1a1a1a; 
+        }
+
+        /* Controls */
+        .no-print {
+            max-width: 800px;
+            margin: 0 auto 20px;
+            text-align: center;
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        /* Paper Styling based on image_1a50a9.png */
+        .exam-paper {
+            background: white;
+            max-width: 850px;
+            margin: 0 auto;
+            padding: 50px 70px;
+            border: 1px solid #ccc;
+            min-height: 1000px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        .header {
+            text-align: center;
+            border-bottom: 2px solid #000;
+            margin-bottom: 30px;
+            padding-bottom: 10px;
+        }
+
+        .header h1 { margin: 0; font-size: 1.5rem; letter-spacing: 1px; }
+        .header p { margin: 5px 0; font-weight: bold; font-size: 0.9rem; }
+
+        .section-title {
+            font-weight: bold;
+            text-transform: uppercase;
+            text-decoration: underline;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+        }
+
+        .question-row {
+            display: flex;
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            page-break-inside: avoid;
+        }
+
+        .q-num { min-width: 35px; font-weight: normal; }
+        .q-text { flex-grow: 1; }
+        
+        /* Indentation for sub-questions */
+        .sub-q {
+            display: block;
+            margin-left: 20px;
+            margin-top: 5px;
+        }
+
+        button {
+            padding: 10px 20px;
+            margin: 0 10px;
+            cursor: pointer;
+            border: none;
+            border-radius: 4px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+        .btn-gen { background: #1b5e20; color: white; }
+        .btn-gen:hover { background: #2e7d32; }
+        .btn-print { background: #333; color: white; }
+
+        @media print {
+            .no-print { display: none; }
+            body { padding: 0; background: white; }
+            .exam-paper { border: none; width: 100%; padding: 20px; box-shadow: none; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="no-print">
+    <button class="btn-gen" onclick="generatePaper()">Generate New Version</button>
+    <button class="btn-print" onclick="window.print()">Print / Save as PDF</button>
+</div>
+
+<div class="exam-paper" id="paper">
+    <div class="header">
+        <h1>CH 7: RATIOS AND PROPORTIONS</h1>
+    </div>
+    
+    <div id="exam-content"></div>
+</div>
+
+<script>
+const questions = {
+secA: [
+    "Divide 6000 in the ratio 3 : 4 : 5.",
+    "500 workers can finish a work in 8 days. How many workers will finish the same work in 5 days?",
+    "What must be added to each term in the ratio 2 : 3 so that it becomes 5 : 6?",
+    "What must be added to each term in the ratio 5 : 6 so that it becomes 11 : 12?",
+    "What must be subtracted from each term in the ratio 7 : 4 so that it becomes 5 : 2?",
+    "Two numbers are in the ratio 3 : 5. If 5 is added to each term, they are in the ratio 2 : 3. Find the numbers.",
+    "A ratio in the lowest form is 3 : 8. If the difference between the quantities is 25, find the quantities.",
+    "Find the ratio between two numbers such that their sum is 40 and their difference is 8.",
+    "If 10 persons can do a job in 30 days, then in how many days can 15 persons do the same job?",
+    "Find the number which when added to the numerator and denominator of 25 : 37 will make it 5 : 6.",
+    "An article is sold at 40% gain on the cost price. Find the ratio of the selling price and cost price.",
+    "If $a : 3 : 15 = 5 : b : 5$, find the values of 'a' and 'b'.",
+    "If $a : b = 3 : 4$ and $b : c = 8 : 15$, find $a : b : c$.",
+    "X, Y and Z score runs in cricket. The ratio of runs by X and Y is 3 : 2 and Y and Z is 3 : 2. If they score 342 runs together, find the runs scored by each.",
+"If $x:y$ is $2:3$, then find $\\frac{2x^2+5y^2}{(x^2)(y^2)}$"
+],
+secB: [
+
+"The monthly incomes of A and B are in the ratio 2 : 3 and their monthly expenditures are in the ratio 3 : 5. If each saves Rs 100 per month, find the monthly incomes of A and B.",
+    "X, Y and Z score runs in cricket. The ratio of runs by X and Y is 3 : 2 and Y and Z is 3 : 2. If they score 342 runs together, find the runs scored by each.",
+    "Three numbers are in the ratio 2 : 3 : 4. If the sum of their squares is 1856, find the numbers.",
+    "The monthly incomes of A and B are in the ratio 9 : 7 and those of B and C are in the ratio 3 : 2. If 10% of A’s income and 15% of the C’s income differ by Rs 18, find the incomes of A, B and C.",
+    "If $a : b = 2 : 3$ and $x : y = 4 : 5$, find the value of $(5ax + 3by) : (10ax + 4by)$.",
+    "Two taps can separately fill a tank in 12 min and 15 min respectively. When full, the tank can be emptied by a drain pipe in 20 min. If all three pipes are opened simultaneously when the tank is empty, in what time will the tank be filled?",
+    "5 workers, each working 9 hours a day, can finish a work in 30 days. How many workers are required to finish eight times the work in 25 days, each working 8 hours a day?",
+    "A jar contains two liquids A and B in the ratio 7 : 5. When 9 liters of the mixture is drawn and the jar is filled with the same quantity of B, the ratio becomes 7 : 9. Find the quantity of A in the jar initially.",
+    "Three carpenters can earn Rs 360 in 6 days working 9 hours a day. How much will 8 carpenters earn in 12 days working 6 hours a day?",
+    "Rs 5625 is divided among A, B and C so that A receives one-half as much as B and C together receive, and B receives one-fourth of what A and C together receive. Find the shares of A, B and C.",
+    "Walking at 4 kmph, a student reaches college 5 minutes late. If he walks at 5 kmph, he reaches 2.5 minutes early. Find the distance from his house to the college.",
+    "In a fort, there was ration for 560 soldiers for 70 days. After 20 days, 60 soldiers left the fort. For how many days can the remaining ration support the remaining soldiers?",
+    "A railway train is 100 meters long and is running at the speed of 30 kmph. In what time will it pass through: <br><span class='sub-q'>i) a man standing on the platform</span> <span class='sub-q'>ii) a bridge which is 200 meters long?</span>",
+    "Distribute Rs 8000 in the ratio 3 : 4 : 5.",
+
+    ]
+};
+
+function shuffle(arr) { return arr.sort(() => 0.5 - Math.random()); }
+
+function generatePaper() {
+    const content = document.getElementById('exam-content');
+    let html = "";
+    
+     html += `<div class="section-title"><center>SECTION A (2 Marks)</center></div>`;
+    shuffle([...questions.secA]).slice(0, 6).forEach((q, i) => {
+        html += `<div class="question-row"><div class="q-num">${i+1}.</div><div class="q-text">${q}</div></div>`;
+    });
+
+    // Section B - 3 Marks
+    html += `<div class="section-title"<center>SECTION B (3 Marks)</center></div>`;
+    shuffle([...questions.secB]).slice(0, 6).forEach((q, i) => {
+        html += `<div class="question-row"><div class="q-num">${i+6}.</div><div class="q-text">${q}</div></div>`;
+    });
+
+  
+
+
+    content.innerHTML = html;
+    MathJax.typeset();
+}
+
+window.onload = generatePaper;
+</script>
+
+</body>
+</html>
