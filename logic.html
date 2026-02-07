@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="books.ico" type="image/x-icon">
+    <title>MATHEMATICAL LOGIC</title>
+    
+    <script>
+        window.MathJax = {
+            tex: { inlineMath: [['$', '$'], ['\\(', '\\)']], displayMath: [['$$', '$$']] },
+            svg: { fontCache: 'global' }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <style>
+        body { 
+            font-family: 'Times New Roman', Times, serif; 
+            background: #f0f2f5; 
+            margin: 0; 
+            padding: 30px; 
+            color: #1a1a1a; 
+        }
+
+        /* Controls */
+        .no-print {
+            max-width: 800px;
+            margin: 0 auto 20px;
+            text-align: center;
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        /* Paper Styling based on image_1a50a9.png */
+        .exam-paper {
+            background: white;
+            max-width: 850px;
+            margin: 0 auto;
+            padding: 50px 70px;
+            border: 1px solid #ccc;
+            min-height: 1000px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        .header {
+            text-align: center;
+            border-bottom: 2px solid #000;
+            margin-bottom: 30px;
+            padding-bottom: 10px;
+        }
+
+        .header h1 { margin: 0; font-size: 1.5rem; letter-spacing: 1px; }
+        .header p { margin: 5px 0; font-weight: bold; font-size: 0.9rem; }
+
+        .section-title {
+            font-weight: bold;
+            text-transform: uppercase;
+            text-decoration: underline;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+        }
+
+        .question-row {
+            display: flex;
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            page-break-inside: avoid;
+        }
+
+        .q-num { min-width: 35px; font-weight: normal; }
+        .q-text { flex-grow: 1; }
+        
+        /* Indentation for sub-questions */
+        .sub-q {
+            display: block;
+            margin-left: 20px;
+            margin-top: 5px;
+        }
+
+        button {
+            padding: 10px 20px;
+            margin: 0 10px;
+            cursor: pointer;
+            border: none;
+            border-radius: 4px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+        .btn-gen { background: #1b5e20; color: white; }
+        .btn-gen:hover { background: #2e7d32; }
+        .btn-print { background: #333; color: white; }
+
+        @media print {
+            .no-print { display: none; }
+            body { padding: 0; background: white; }
+            .exam-paper { border: none; width: 100%; padding: 20px; box-shadow: none; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="no-print">
+    <button class="btn-gen" onclick="generatePaper()">Generate New Version</button>
+    <button class="btn-print" onclick="window.print()">Print / Save as PDF</button>
+</div>
+
+<div class="exam-paper" id="paper">
+    <div class="header">
+        <h1>CH 6: MATHEMATICAL LOGIC</h1>
+    </div>
+    
+    <div id="exam-content"></div>
+</div>
+
+<script>
+const questions = {
+
+secC: [
+
+    "Show that [~𝑝∧(𝑝∨𝑞)]→𝑞 is a Tautology or a Contradiction.",
+    "Show that [~(𝑝→~𝑞)]∨(~𝑝↔𝑞) is a Tautology or a Contradiction.",
+    "Show that ~(𝑝∨𝑞)→(~𝑝∧~𝑞) is a Tautology or a Contradiction.",
+    "Show that [(∼𝑝∨𝑞)]↔(𝑝⋁∼𝑞) is a Tautology or a Contradiction.",
+    "Show that (𝑝∧~𝑞)→~ (𝑝∧𝑞) is a Tautology or a Contradiction.",
+    "Show that(𝑝∨𝑞)⋀(~𝑝∧~𝑞)is a Tautology or a Contradiction.",
+    "Examine whether the propositions ~(𝑝↔𝑞)∨𝑞 and (𝑝∧~𝑞)∨(𝑞∧~𝑝) are logically equivalent or not.",
+    "Examine whether the propositions (𝑝∧∼𝑞)∨𝑞 and 𝑝∨𝑞 are logically equivalent or not.",
+    "Examine whether the propositions 𝑝↔𝑞 and  [(𝑝→𝑞)∧(𝑞→𝑝)] are logically equivalent or not.",
+    "Examine whether the propositions 𝑝↔𝑞 and (𝑝→𝑞)∧(𝑞→𝑝) are logically equivalent or not.",
+    "Verify whether the proposition (~𝑝∧𝑞)∧∼𝑟 is a Tautology ,Contradiction or neither.",
+    "Verify whether the proposition~(𝑝→𝑞)∨[(∼𝑝∧𝑞)↔∼𝑞] is a Tautology, Contradiction or neither.",
+
+    ]
+};
+
+function shuffle(arr) { return arr.sort(() => 0.5 - Math.random()); }
+
+function generatePaper() {
+    const content = document.getElementById('exam-content');
+    let html = "";
+    
+    // Section C
+    html += `<div class="section-title"><center>SECTION - C (5 MARKS)</center></div>`;
+    shuffle([...questions.secC]).slice(0, 4).forEach((q, i) => {
+        html += `<div class="question-row"><div class="q-num">${i+1}.</div><div class="q-text">${q}</div></div>`;
+    });
+
+
+    content.innerHTML = html;
+    MathJax.typeset();
+}
+
+window.onload = generatePaper;
+</script>
+
+</body>
+</html>
