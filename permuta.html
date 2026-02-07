@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <link rel="icon" href="books.ico" type="image/x-icon">
-
+    <link rel="icon" href="books.ico" type="image/x-icon">
     <title>PERMUTATIONS AND COMBINATIONS</title>
     
     <script>
@@ -35,7 +34,7 @@
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
 
-        /* Paper Styling */
+        /* Paper Styling based on image_1a50a9.png */
         .exam-paper {
             background: white;
             max-width: 850px;
@@ -43,6 +42,7 @@
             padding: 50px 70px;
             border: 1px solid #ccc;
             min-height: 1000px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
         }
 
         .header {
@@ -52,8 +52,8 @@
             padding-bottom: 10px;
         }
 
-        .header h1 { margin: 0; font-size: 1.7rem; }
-        .header p { margin: 5px 0; font-weight: bold; }
+        .header h1 { margin: 0; font-size: 1.5rem; letter-spacing: 1px; }
+        .header p { margin: 5px 0; font-weight: bold; font-size: 0.9rem; }
 
         .section-title {
             font-weight: bold;
@@ -61,21 +61,27 @@
             text-decoration: underline;
             margin-top: 40px;
             margin-bottom: 20px;
-            text-align: center;
+            font-size: 1.1rem;
         }
 
         /* Question Layout to match image_65dda6.png */
         .question-row {
             display: flex;
-            align-items: center; /* Centers matrices with text vertically */
-            margin-bottom: 25px;
-            font-size: 1.15rem;
-            line-height: 1.5;
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            page-break-inside: avoid;
         }
 
-        .q-num { min-width: 35px; font-weight: bold; align-self: flex-start; margin-top: 5px; }
+        .q-num { min-width: 35px; font-weight: normal; }
         .q-text { flex-grow: 1; }
-        .q-marks { font-weight: bold; min-width: 50px; text-align: right; }
+        
+        /* Indentation for sub-questions */
+        .sub-q {
+            display: block;
+            margin-left: 20px;
+            margin-top: 5px;
+        }
 
         button {
             padding: 10px 20px;
@@ -84,14 +90,16 @@
             border: none;
             border-radius: 4px;
             font-weight: bold;
+            transition: 0.3s;
         }
         .btn-gen { background: #1b5e20; color: white; }
+        .btn-gen:hover { background: #2e7d32; }
         .btn-print { background: #333; color: white; }
 
         @media print {
             .no-print { display: none; }
             body { padding: 0; background: white; }
-            .exam-paper { border: none; width: 100%; padding: 30px; }
+            .exam-paper { border: none; width: 100%; padding: 20px; box-shadow: none; }
         }
     </style>
 </head>
@@ -104,88 +112,72 @@
 
 <div class="exam-paper" id="paper">
     <div class="header">
-        <h1>Chapter 2: PERMUTATIONS AND COMBINATIONS</h1>
+        <h1>CH 2: PERMUTATIONS AND COMBINATIONS</h1>
     </div>
     
-    <div id="exam-content">
-        </div>
+    <div id="exam-content"></div>
 </div>
 
 <script>
 const questions = {
     secA: [
- 
-    "In how many ways can 7 students and 4 teachers be seated in a row so that no two teachers are together?",
-    "A box contains 5 red 4 black and 3 white shirts. How many selections of 8 shirts can be made if the selection contains exactly 4 red 2 black and 2 white shirts?",
-    "In how many ways can 6 people be chosen out of 10 people if one particular person is always included?",
-    "Find the number of triangles and straight lines that can be formed out of 20 points in which 8 are collinear.",
-    "How many words can be formed from the letters of the word FRIEND which begin with F and end with D.",
-    "Find the number of diagonals in a decagon.",
-    "Find the number of diagonals of a polygon of 20 sides.",
-    "Find the number of parallelograms that can be formed from 6 parallel lines intersecting another set of 4 parallel lines.",
-    "If a convex polygon has 170 diagonals, find the number of sides of the polygon.",
-    "In how many ways can 7 people be seated for a photograph if two particular people always want to be together.",
-    "In how many ways can 7 math books 8 statistics books and 4 accountancy books be arranged in a shelf if books of the same subject are always together?",
-    "In how many ways can 9 boys and 6 girls be arranged in a row if no two girls are together?",
-    "Find the number of words that can be formed using all the letters of the word ENGINEERING having all the 3 E’s together.",
-    "How many 4 digit even numbers can be formed from the digits 1, 2, 3, 4, 5, 6 no digit being repeated.",
-    "In how many ways 10 beads of different colours are strung into a necklace if the red green and yellow beads are always together.",
-    "Find the number of ways in which 8 men be arranged around a table so that two particular men may not be next to each other.",
-    "In how many ways 6 gentlemen and 4 ladies are seated round a table so that no two ladies are together.",
-    "In how many ways can 6 boys be arranged in a circle if 2 particular boys always want to be together?",
-    "If $^nP_r = 3024$ and $^nC_r = 126$, find r.",
-    "If $^nP_r = 24 ^nC_4$, find n.",
-    "If $^nC_8 = ^nC_{12}$, find the value of $^nC_5$.",
-    "A person has 9 friends. In how many ways can he invite one or more of them to dinner.",
-    "Find the number of parallelograms that can be formed from a set of 5 parallel lines intersecting another set of 6 parallel lines.",
-    "In how many ways can 6 people be selected out of 12 people so that (a) two particular people must be included (b) Two particular members must be excluded.",
-    "In a party each person shakes hand with everyone else. If there are 25 members in the party, calculate the number of handshakes.",
-    "In how many ways can 3 boys and 4 girls be arranged in a row so that all the three boys are together?",
-    "In how many ways can 5 men and 4 women be seated in a row such that women occupy the even places?",
-    "In how many ways can 7 persons be seated in a row if two persons always occupy the end seats?",
-    "In how many ways can 6 red and 4 white marbles be chosen from a bag containing 10 red and 6 white marbles.",
-    "In how many ways can 6 people be chosen out of 10 people if one particular person is always included?",
-    "In how many ways can 7 persons be seated in a row if two persons always occupy the end seats?",
-    "In how many ways the word “CARROM” be arranged such that the 2 R’s are always together.",
-    "How many words can be formed from the letters of the word “FRIEND” which begin with F and end with D?",
-    "How many four digit numbers can be formed with the 0, 2, 3, 5, 7 such that no digits are repeated.",
-    "How many three digit numbers ending with 7 can be formed using the digits 1, 2, 5, 7, 8 digits cannot be repeated.",
-    "How many 6 digit numbers can be formed from the digits 1, 2, 3, 4, 5, 6 (no digit being repeated) which are divisible by 5.",
-    "In how many ways can 7 students and 4 teachers be seated in a row such that no two teachers are together?",
-    "In how many ways can 7 books on art, 5 books on fiction, 4 books on adventure be arranged so that books of the same category are always together.",
-    "Find the number of ways in which 4 boys and 5 girls can be arranged in a row so that no two boys are together and no two girls are together.",
-    "In how many ways 10 examination papers are arranged so that best and worst papers never come together.",
-    "In how many ways can the letters of the word “LAUGHTER” be arranged so that the vowels are always together?",
-    "In how many ways can the letters of the word “HEXAGON” be arranged so that the vowels are in even places?",
-    "In how many ways can 5 gentlemen and 3 ladies be seated around a table so that no two ladies are together?",
-    "If $^nC_{10} = ^nC_{14}$, find $^nC_{21}$.",
-    "Find the number of ways of arranging 10 people around a circular table if 2 particular people never sit together."
-],
-    secB: [
-    "Solve by Cramer’s rule: $2x+3y=11; x-y=3$.",
-    "Solve by Cramer’s rule: $3x+4y=7; 7x-y=6$.",
-    "Solve by Cramer’s rule: $3x+2y=8; 4x-3y=5$.",
-    "Solve by Cramer’s rule: $2x+y=1; x-3y=4$.",
-    "Solve by Cramer’s rule: $5x-7y=3; 7x-5y=9$.",
-    "If $A = \\begin{bmatrix} 1 & 2 \\\\ 1 & 4 \\end{bmatrix}$ and $B = \\begin{bmatrix} 4 & -3 \\\\ 2 & 1 \\end{bmatrix}$ and $C = \\begin{bmatrix} 1 & 0 \\\\ -2 & 4 \\end{bmatrix}$ Verify that $A(BC)=(AB)C$.",
-    "If $A = \\begin{bmatrix} 2 & 3 \\\\ -4 & 1 \\end{bmatrix}$ and $B = \\begin{bmatrix} -1 & 5 \\\\ 6 & 2 \\end{bmatrix}$. Show that $(AB)' = B'A'$.",
-    "If $A+B = \\begin{bmatrix} 2 & 3 \\\\ 4 & 1 \\end{bmatrix}$ and $2A-B = \\begin{bmatrix} 1 & -3 \\\\ 2 & 2 \\end{bmatrix}$. Find $A$ and $B$.",
-    "Find matrix $A$ and $B$ if $A + B = \\begin{bmatrix} 7 & 0 \\\\ 2 & 5 \\end{bmatrix}$ and $A - B = \\begin{bmatrix} 3 & 0 \\\\ 0 & 3 \\end{bmatrix}$.",
-    "If $A = \\begin{bmatrix} 2 & -1 \\\\ 1 & 4 \\end{bmatrix}$ and $B = \\begin{bmatrix} 4 & -3 \\\\ 2 & 1 \\end{bmatrix}$. Show that $(AB)' = B'A'$.",
-    "If $A = \\begin{bmatrix} 1 & 2 \\\\ 1 & 4 \\end{bmatrix}$ and $B = \\begin{bmatrix} 4 & -3 \\\\ 2 & 1 \\end{bmatrix}$ and $C = \\begin{bmatrix} 1 & 0 \\\\ -2 & 4 \\end{bmatrix}$ Verify that $A(B+C)=AB+AC$.",
-    "Find $x$ if $\\begin{bmatrix} x^3 & 1 \\\\ 3 & 3 \\end{bmatrix} + \\begin{bmatrix} -2x^2 & 3 \\\\ 1 & 4 \\end{bmatrix} = \\begin{bmatrix} -x & 4 \\\\ 4 & 7 \\end{bmatrix}$.",
-    "If $A = \\begin{bmatrix} 1 & 2 \\\\ 3 & 4 \\end{bmatrix}$ and $A+2B = A^2$, find $B$.",
-    "Find $x$ and $y$ if $\\begin{bmatrix} x & y \\end{bmatrix} \\begin{bmatrix} 1 & 5 \\\\ -2 & 3 \\end{bmatrix} = \\begin{bmatrix} 2 & 0 \\end{bmatrix}$.",
-    "If $2A+B = \\begin{bmatrix} 3 & -1 \\\\ -2 & 5 \\end{bmatrix}$ and $A-2B = \\begin{bmatrix} 4 & 2 \\\\ -1 & 5 \\end{bmatrix}$. Find $A$ and $B$.",
-    "If $A = \\begin{bmatrix} 2 & -1 \\\\ -1 & 2 \\end{bmatrix}$ then show that $A^2 - 4A + 3I = 0$."
+        "In how many ways can 7 students and 4 teachers be seated in a row so that no two teachers are together?",
+        "A box contains 5 red 4 black and 3 white shirts. How many selections of 8 shirts can be made if the selection contains exactly 4 red 2 black and 2 white shirts?",
+        "In how many ways can 6 people be chosen out of 10 people if one particular person is always included?",
+        "Find the number of triangles and straight lines that can be formed out of 20 points in which 8 are collinear.",
+        "How many words can be formed from the letters of the word FRIEND which begin with F and end with D.",
+        "Find the number of diagonals in a decagon.",
+        "Find the number of diagonals of a polygon of 20 sides.",
+        "Find the number of parallelograms that can be formed from 6 parallel lines intersecting another set of 4 parallel lines.",
+        "If a convex polygon has 170 diagonals, find the number of sides of the polygon.",
+        "In how many ways can 7 people be seated for a photograph if two particular people always want to be together.",
+        "In how many ways can 7 math books 8 statistics books and 4 accountancy books be arranged in a shelf if books of the same subject are always together?",
+        "In how many ways can 9 boys and 6 girls be arranged in a row if no two girls are together?",
+        "Find the number of words that can be formed using all the letters of the word ENGINEERING having all the 3 E’s together.",
+        "How many 4 digit even numbers can be formed from the digits 1, 2, 3, 4, 5, 6 no digit being repeated.",
+        "In how many ways 10 beads of different colours are strung into a necklace if the red green and yellow beads are always together.",
+        "Find the number of ways in which 8 men be arranged around a table so that two particular men may not be next to each other.",
+        "In how many ways 6 gentlemen and 4 ladies are seated round a table so that no two ladies are together.",
+        "In how many ways can 6 boys be arranged in a circle if 2 particular boys always want to be together?",
+        "If $^nP_r = 3024$ and $^nC_r = 126$, find r.",
+        "If $^nP_r = 24 ^nC_4$, find n.",
+        "If $^nC_8 = ^nC_{12}$, find the value of $^nC_5$.",
+        "A person has 9 friends. In how many ways can he invite one or more of them to dinner.",
+        "Find the number of parallelograms that can be formed from a set of 5 parallel lines intersecting another set of 6 parallel lines.",
+        "In how many ways can 6 people be selected out of 12 people so that: <br><span class='sub-q'>(a) two particular people must be included</span> <span class='sub-q'>(b) Two particular members must be excluded.</span>",
+        "In a party each person shakes hand with everyone else. If there are 25 members in the party, calculate the number of handshakes.",
+        "In how many ways can 3 boys and 4 girls be arranged in a row so that all the three boys are together?",
+        "In how many ways can 5 men and 4 women be seated in a row such that women occupy the even places?",
+        "In how many ways can 7 persons be seated in a row if two persons always occupy the end seats?",
+        "In how many ways can 6 red and 4 white marbles be chosen from a bag containing 10 red and 6 white marbles.",
+        "In how many ways the word “CARROM” be arranged such that the 2 R’s are always together.",
+        "How many four digit numbers can be formed with the 0, 2, 3, 5, 7 such that no digits are repeated.",
+        "How many 6 digit numbers can be formed from the digits 1, 2, 3, 4, 5, 6 (no digit being repeated) which are divisible by 5.",
+        "In how many ways can 7 books on art, 5 books on fiction, 4 books on adventure be arranged so that books of the same category are always together.",
+        "In how many ways 10 examination papers are arranged so that best and worst papers never come together.",
+        "In how many ways can the letters of the word “LAUGHTER” be arranged so that the vowels are always together?",
+        "In how many ways can the letters of the word “HEXAGON” be arranged so that the vowels are in even places?",
+        "If $^nC_{10} = ^nC_{14}$, find $^nC_{21}$."
     ],
-    secC: [
-        "Solve by matrix method: $x+y+z = 5; 2x+y-z=2; 2x-y+z=2$.",
-        "Solve by matrix method: $x+y-z = 1; 3x+y-2z=3; x-y-z=-1$.",
-        "Solve by matrix method: $3x+y+2z = 3; 2x-3y-z=-3; x+2y+z=4$.",
-        "Solve by matrix method: $x-y+2z = 3; 2x+z=1; 3x+2y+z=4$.",
-        "Solve by matrix method: $x-y-2z = 3; 2x+y+z=5; 4x-y-2z=1$."
-    ]
+    secB: [
+        "A family of 4 brothers and 3 sisters is to be arranged for a photograph in one row. In how many ways can they be seated if: <br><span class='sub-q'>a) all the sisters sit together</span> <span class='sub-q'>b) no two sisters sit together</span>",
+        "Find the number of ways in which 4 boys and 5 girls can be arranged in a row so that no two boys are together and no two girls are together.",
+        "In how many ways can 6 boys and 6 girls be arranged in a row so that: <br><span class='sub-q'>a) All girls are together</span> <span class='sub-q'>b) All boys are not together</span> <span class='sub-q'>c) Boys and girls are arranged alternatively.</span> <span class='sub-q'>d) Two particular girls are always together</span> <span class='sub-q'>e) No two girls are together</span>",
+"In how many ways can 7 math books, 8 statistics books, and 4 accountancy books be arranged in a shelf if: <br><span class='sub-q'>a) Maths books are always together</span> <span class='sub-q'>b) Books of the same subject are always together.</span>",
+    "Find the number of permutations of the letters of the word MISSISSIPPI. In how many of these: <br><span class='sub-q'>a) The 4 S’s are together</span> <span class='sub-q'>b) The 4 S’s are not together</span> <span class='sub-q'>c) Begin with MISS</span> <span class='sub-q'>d) Begin with SIP</span>",
+    "Find the number of permutations of the letters of the word ‘COMMITTEE’: <br><span class='sub-q'>a) How many begin with T and end with T?</span> <span class='sub-q'>b) In how many all the vowels are together?</span> <span class='sub-q'>c) In how many no two vowels are together?</span> <span class='sub-q'>d) How many end with MITE?</span>",
+    "Find the number of permutations of the letters of the word ASSASSINATION. In how many of these: <br><span class='sub-q'>a) The vowels are in even places</span> <span class='sub-q'>b) Vowels are in odd places</span> <span class='sub-q'>c) The word NATION is always present together.</span> <span class='sub-q'>d) Begin with ‘AS’ and end with ‘AS’</span>",
+    "In how many ways can 7 English books, 8 Kannada books, and 5 Hindi books be arranged in a shelf? In how many of these: <br><span class='sub-q'>a) All Kannada books are together</span> <span class='sub-q'>b) No two English books are together</span> <span class='sub-q'>c) Books of the same language are together</span> <span class='sub-q'>d) All Kannada books are together and all Hindi books are together.</span>",
+    "How many 4 digit numbers can be formed using digits 0, 1, 2, 3, 4, 5, 6 (No digit can be repeated). How many of them are: <br><span class='sub-q'>a) Even</span> <span class='sub-q'>b) Odd</span> <span class='sub-q'>c) Divisible by 5</span>",
+    "A man has 10 relatives, 4 of them are ladies, 3 gentlemen, and 3 children. In how many ways can he invite 7 relatives to a dinner party so that: <br><span class='sub-q'>a. There are exactly 2 ladies, 3 gentlemen and 2 children</span> <span class='sub-q'>b. There are exactly 2 gentlemen and at least 3 ladies.</span> <span class='sub-q'>c. There are exactly 3 children, at least 1 lady and at least two gentlemen.</span>",
+    "From a class of 12 boys and 10 girls, 10 students are to be chosen for a competition, including at least 4 boys and at least 4 girls. The 2 girls who won prize last year should be included. In how many ways can the selection be made?",
+    "A box contains 5 red, 4 black and 3 white balls. How many ways selection of 8 balls can be done if the selection contains: <br><span class='sub-q'>a. Exactly 4 red, 2 black and 2 white balls.</span> <span class='sub-q'>b. Atleast 3 red, atleast 3 black and atleast 1 white balls.</span>",
+    "An examination paper consists of 12 questions divided into part A (7 questions) and part B (5 questions). A candidate is required to answer 8 questions selecting atleast 3 from each part. In how many ways can the candidate select the questions?",
+    "A team of eleven is to be chosen out of 16 cricket players (4 bowlers, 2 wicket keepers). In how many ways can the team be chosen so that: <br><span class='sub-q'>a) There are atleast 3 bowlers and 1 wicket keeper.</span> <span class='sub-q'>b) There are atleast 3 bowlers and atleast one wicket keeper.</span>",
+    "Out of 4 officers and 10 clerks, a committee consisting of 2 officers and 3 clerks is to be formed. In how many ways can this be done if: <br><span class='sub-q'>a) Any officer and any clerk can be included</span> <span class='sub-q'>b) One particular clerk must be on committee</span> <span class='sub-q'>c) One particular officer can be on the committee.</span>",
+    "A committee of 5 is to be formed from 8 Americans and 5 Anglo-Indians. In how many ways can this be done when the committee contains: <br><span class='sub-q'>a) Exactly two Anglo-Indians</span> <span class='sub-q'>b) At least two Anglo-Indians.</span>",
+    "A candidate is required to answer 6 out of 12 questions divided into 2 groups of 6 questions each. Find the number of choices he has if he cannot answer more than five questions from any group.",
+    "Find the number of permutations of the letters of the word “ENGINEERING”. How many of these: <br><span class='sub-q'>a) Begin with E and end with E</span> <span class='sub-q'>b) Have all the 3 E’s together</span> <span class='sub-q'>c) All the vowels are not together</span> <span class='sub-q'>d) No two vowels are together</span>"]
 };
 
 function shuffle(arr) { return arr.sort(() => 0.5 - Math.random()); }
@@ -194,26 +186,20 @@ function generatePaper() {
     const content = document.getElementById('exam-content');
     let html = "";
     
-    // Section A - 2 Marks
-    html += `<div class="section-title">Section A (2 Marks)</div>`;
+    // Section A
+    html += `<div class="section-title"><center>SECTION - A (2 MARKS)</center></div>`;
     shuffle([...questions.secA]).slice(0, 6).forEach((q, i) => {
         html += `<div class="question-row"><div class="q-num">${i+1}.</div><div class="q-text">${q}</div></div>`;
     });
 
-    // Section B - 3 Marks
-    html += `<div class="section-title">Section B (3 Marks)</div>`;
+    // Section B
+    html += `<div class="section-title"><center>SECTION - B (3 MARKS)</center></div>`;
     shuffle([...questions.secB]).slice(0, 6).forEach((q, i) => {
-        html += `<div class="question-row"><div class="q-num">${i+6}.</div><div class="q-text">${q}</div></div>`;
-    });
-
-    // Section C - 5 Marks
-    html += `<div class="section-title">Section C (5 Marks)</div>`;
-    shuffle([...questions.secC]).slice(0, 4).forEach((q, i) => {
-        html += `<div class="question-row"><div class="q-num">${i+9}.</div><div class="q-text">${q}</div></div>`;
+        html += `<div class="question-row"><div class="q-num">${i+7}.</div><div class="q-text">${q}</div></div>`;
     });
 
     content.innerHTML = html;
-    MathJax.typeset(); // Refresh math rendering
+    MathJax.typeset();
 }
 
 window.onload = generatePaper;
